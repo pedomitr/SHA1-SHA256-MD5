@@ -28,7 +28,7 @@ namespace SHA1_SHA256_MD5
             Hide();
         }      
 
-        //Pokreće odabrane hasheve i prikazuje rezultat u chartu.//Višak
+        //Pokreće odabrane hasheve i prikazuje rezultat u chartu.//Višak!!!
         private void buttonRun_Click(object sender, EventArgs e)
         {
             List<int> check = PickedHash();
@@ -134,7 +134,7 @@ namespace SHA1_SHA256_MD5
              open.Filter = "Text Files (*txt)|*txt";
              if (open.ShowDialog() == DialogResult.OK)
              {
-                //StreamReader reader = new StreamReader(File.OpenRead(open.FileName));//višak
+                //StreamReader reader = new StreamReader(File.OpenRead(open.FileName));//višak!!!
                 textBoxDatoteka.Text = open.SafeFileName;
                 array = File.ReadAllBytes(open.FileName);
                 buttonRun.Enabled = true;
