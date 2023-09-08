@@ -25,10 +25,10 @@ namespace SHA1_SHA256_MD5
             List<byte> modmessage= new List<byte>();
             bitmessage = (ConvertStringToByteArray(message));
             modmessage.AddRange(bitmessage);
-            int paddsize = Paddlength(bitmessage);
+            int paddsize = Paddlength(bitmessage);//proslijediti direktno u funkciju
             //appendanje
             AppendPadd(modmessage, paddsize, bitmessage.Length);
-            modmessage.Add(15);//valjda repreentira 1000 0000, tako da doda bit 1, 0 nebitne
+            modmessage.Add(128);//valjda reprezentira 1000 0000, tako da doda bit 1, 0 nebitne
 
 
         }
