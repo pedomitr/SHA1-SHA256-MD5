@@ -21,13 +21,15 @@ namespace SHA1_SHA256_MD5
             string message = "";
             string hash;
             byte[] bitmessage;
-            byte[] paddedmessage;
+            List<byte> mblock = new List<byte>();
             List<byte> modmessage= new List<byte>();
-            bitmessage = (ConvertStringToByteArray(message));
+            bitmessage = ConvertStringToByteArray(message);
             modmessage.AddRange(bitmessage);
             int paddsize = Paddlength(bitmessage);//proslijediti direktno u funkciju
             //appendanje
             AppendPadd(modmessage, paddsize, bitmessage.Length);
+            //blok od 512 bita
+            mblock.AddRange(ExtractBlock(modmessage));
         }
 
         //vraća podatak koliko je paddinga potrebno u bitovima + 64 bita za spremanje duljine originalne poruke
@@ -60,7 +62,14 @@ namespace SHA1_SHA256_MD5
         }
 
         //TO DO
-        //Podijeliti poruku na blokove od 512 bita
+        //Podijeliti poruku na blokove od 512 bita/ 64 bytea
+        private List<byte> ExtractBlock(List<byte> modmessage)
+        {
+            List<byte> block = new List<byte>();
+            block.AddRange(modmessage.GetRange(0, 64));
+            modmessage.RemoveRange(0, 64);
+            return block;
+        }
         //Proslijediti blok kroz runde
         private void MD5F1(byte[] F1, byte[] A, byte[] B, byte[] C, byte[] D)
         {
@@ -68,14 +77,11 @@ namespace SHA1_SHA256_MD5
             //byte result;
             for (int i = 0; i < A.Length; ++i)
             {
-                var opA = new BinaryOperator(A[1]);
-                var opB = new BinaryOperator(B[1]);
-                var opC = new BinaryOperator(C[1]);
-                var opD = new BinaryOperator(D[1]);
+                var opA = new BinaryOperator(A[i]);
+                var opB = new BinaryOperator(B[i]);
+                var opC = new BinaryOperator(C[i]);
+                var opD = new BinaryOperator(D[i]);
                 result.Add((byte)((opB.opA & opC.opA) | ((~opB.opA) & opD.opA)));
-                int b = 13;
-                b = b | 2;
-                Console.WriteLine(b);
             }
         }
 
