@@ -59,6 +59,30 @@ namespace SHA1_SHA256_MD5
             modmessage.Concat(osize);
         }
 
+        //TO DO
+        //Podijeliti poruku na blokove od 512 bita
+        //Proslijediti blok kroz runde
+        private void MD5F1(byte[] F1, byte[] A, byte[] B, byte[] C, byte[] D)
+        {
+            List<byte> result = new List<byte>();
+            //byte result;
+            for (int i = 0; i < A.Length; ++i)
+            {
+                var opA = new BinaryOperator(A[1]);
+                var opB = new BinaryOperator(B[1]);
+                var opC = new BinaryOperator(C[1]);
+                var opD = new BinaryOperator(D[1]);
+                result.Add((byte)((opB.opA & opC.opA) | ((~opB.opA) & opD.opA)));
+                int b = 13;
+                b = b | 2;
+                Console.WriteLine(b);
+            }
+        }
+
+        
+       // public static MyHash operator | (MyHash a, MyHash b)
+           // => new  MyHash()
+
         private void MySHA1()
         {
 
