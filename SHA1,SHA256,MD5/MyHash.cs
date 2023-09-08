@@ -28,9 +28,6 @@ namespace SHA1_SHA256_MD5
             int paddsize = Paddlength(bitmessage);//proslijediti direktno u funkciju
             //appendanje
             AppendPadd(modmessage, paddsize, bitmessage.Length);
-            modmessage.Add(128);//valjda reprezentira 1000 0000, tako da doda bit 1, 0 nebitne
-
-
         }
 
         //vraća podatak koliko je paddinga potrebno u bitovima + 64 bita za spremanje duljine originalne poruke
@@ -46,7 +43,7 @@ namespace SHA1_SHA256_MD5
         {
             //minimalna veličina padinga je 65(teoretski zapravo 72 pošto pretvramo sa UTF8, a max 
             //dodamo prvo 1 i sedam 0 pošto je to minimum u ovom sustavu
-            modmessage.Add(15);
+            modmessage.Add(128);
             while(paddsize-8 >= 0)
             {
                 modmessage.Add(0);
