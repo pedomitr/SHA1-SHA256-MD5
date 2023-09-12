@@ -44,6 +44,12 @@ namespace SHA1_SHA256_MD5
             {
                 K.Add((uint)Math.Floor(232 * Math.Abs(Math.Sin(i + 1))));
             }
+            //Lista pomaka po rundi
+           // List<uint> s = new List<uint>(); //array je ovdje možda bolji
+            uint[] s = { 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22,      //runde 1-16
+                          5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,    //runde 17-32
+                          4, 11, 16, 23,  4, 11, 16, 23,  4, 11, 16, 23,  4, 11, 16, 23,    //runde 33 48
+                          6, 10, 15, 21,  6, 10, 15, 21,  6, 10, 15, 21,  6, 10, 15, 21 };  //runde 49-64
             //Pozvati prvi set rundi 1-16
 
         }
