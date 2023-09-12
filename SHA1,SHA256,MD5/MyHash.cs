@@ -46,11 +46,15 @@ namespace SHA1_SHA256_MD5
             }
             //Lista pomaka po rundi
            // List<uint> s = new List<uint>(); //array je ovdje možda bolji
-            uint[] s = { 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22,      //runde 1-16
+            uint[] s = { 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22,        //runde 1-16
                           5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,    //runde 17-32
                           4, 11, 16, 23,  4, 11, 16, 23,  4, 11, 16, 23,  4, 11, 16, 23,    //runde 33 48
                           6, 10, 15, 21,  6, 10, 15, 21,  6, 10, 15, 21,  6, 10, 15, 21 };  //runde 49-64
+            //Podijeliti poruku u 32 bitne riječi Mi
+                //mblock lista sadržava 16 članova koji predstavljaju Mi,
+                //ne zaboraviti refrešanje mblocka nakon rundi
             //Pozvati prvi set rundi 1-16
+            Rounds(A, B, C, D, K, s, mblock);
 
         }
 
@@ -89,10 +93,10 @@ namespace SHA1_SHA256_MD5
         {
             List<uint> block = new List<uint>();
             block.AddRange(imessage.GetRange(0, 16));
-            imessage.RemoveRange(0, 64);
+            imessage.RemoveRange(0, 16);
             return block;
         }
-        //Proslijediti blok kroz runde
+        //Proslijediti blok kroz runde // višak
         private List<byte> MD5F1(byte[] F1, byte[] A, byte[] B, byte[] C, byte[] D)
         {
             List<byte> result = new List<byte>();
@@ -104,7 +108,7 @@ namespace SHA1_SHA256_MD5
             return result;
         }
 
-        //Postavlja vrijednosti A,B,C,D
+        //Postavlja vrijednosti A,B,C,D // višak
         private void SetABCD(List<byte> sblock, List<byte> A, List<byte> B, List<byte> C, List<byte> D)
         {
             A.Clear();
@@ -115,6 +119,44 @@ namespace SHA1_SHA256_MD5
             B.AddRange(sblock.GetRange(4, 4));
             C.AddRange(sblock.GetRange(8, 4));
             D.AddRange(sblock.GetRange(12, 4));
+        }
+
+        private void Rounds(uint A, uint B, uint C, uint D, List<uint> K, uint[] s, List<uint> mblock)
+        {
+            int i = 0;
+            uint F = 0;
+            int j = 0;
+            for(i = 0; i < 64; ++i)
+            {
+                if( i >= 0 && i <= 15)
+                {
+                    F = (B & C) | ((~B) & D);
+                    j = i;
+                }
+                else if (i >= 16 && i <= 31)
+                {
+                    F = (B & D) | (C & (~D));
+                    j = (((5 * i) + 1) % 16);
+                }
+                else if (i >= 16 && i <= 31)
+                {
+                    F = B ^ C ^ D;
+                    j = (((3 * i) + 5) % 16);
+                }
+                else if (i >= 16 && i <= 31)
+                {
+                    F = C ^ (B | (~D));
+                    j = ((7 * i) % 16);
+                }
+
+                F = F + A + K[i] + mblock[j];
+                A = D;
+                D = C;
+                C = B;
+                B = (uint)(B + ((int)F << (int)s[i]));
+            }
+            //Dodati rekurziju koja obavlja runde dok se ne obradi cijela poruka,
+            //Za veće poruke rekurzija može biti prezahtjevna??
         }
 
         private void MySHA1()
