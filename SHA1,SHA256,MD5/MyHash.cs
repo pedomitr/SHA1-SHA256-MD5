@@ -28,6 +28,9 @@ namespace SHA1_SHA256_MD5
             int paddsize = Paddlength(bitmessage);//proslijediti direktno u funkciju
             //appendanje
             AppendPadd(modmessage, paddsize, bitmessage.Length);
+            //Konverzija u int list
+            List<int> imessage = new List<int>();
+            imessage.AddRange(ConvertByteListToIntList(modmessage));
             //blok od 512 bita
             mblock.AddRange(ExtractBlock(modmessage));
             //pdoijeliti  blok na 128 bita i iz toga izvuči A, B, C, D od 32b ita
@@ -38,6 +41,8 @@ namespace SHA1_SHA256_MD5
             List<byte> C = new List<byte>();
             List<byte> D = new List<byte>();
             SetABCD(sblock, A, B, C, D);
+            //Pozvati prvi set rundi 1-16
+
         }
 
         //vraća podatak koliko je paddinga potrebno u bitovima + 64 bita za spremanje duljine originalne poruke
@@ -121,6 +126,19 @@ namespace SHA1_SHA256_MD5
         string ConvertByteArrayToString(byte[] array)
         {
             return BitConverter.ToString(array).Replace("-", "").ToLower();
+        }
+
+        private List<int> ConvertByteListToIntList(List<byte> modmessage)
+        {
+            List<int> imessage = new List<int>();
+            List<byte> bmessage = new List<byte>();
+            bmessage.AddRange(modmessage);//kasnije direktno koristiti modmessage zasad kopiramo !!!
+            while ( bmessage.Count > 0)
+            {
+                imessage.Add(bmessage[0] | bmessage[1] | bmessage[2] | bmessage[3]);
+                bmessage.RemoveRange(0, 4);
+            }
+            return imessage;           
         }
     }
 }
