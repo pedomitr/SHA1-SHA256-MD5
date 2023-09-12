@@ -131,6 +131,7 @@ namespace SHA1_SHA256_MD5
                 buttonSHA1.Enabled = true;
                 buttonSHA256.Enabled = true;
                 buttonMD5.Enabled = true;
+                buttonMD5me.Enabled = true;
                 buttonRunAll.Enabled = true;
 
             }
@@ -151,6 +152,7 @@ namespace SHA1_SHA256_MD5
                 buttonSHA1.Enabled = false;
                 buttonSHA256.Enabled = false;
                 buttonMD5.Enabled = false;
+                buttonMD5me.Enabled = false;
                 buttonRunAll.Enabled = false;
             }
         }
@@ -160,6 +162,12 @@ namespace SHA1_SHA256_MD5
         {          
             Owner.Show();
             Hide();          
+        }
+
+        private void buttonMD5me_Click(object sender, EventArgs e)
+        {
+            MyHash MD5me = new MyHash();
+            MD5me.MyMD5(ConvertStringToByteArray());
         }
     }
 }

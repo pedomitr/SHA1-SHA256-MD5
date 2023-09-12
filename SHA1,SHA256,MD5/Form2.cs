@@ -119,6 +119,16 @@ namespace SHA1_SHA256_MD5
                         time.Add(timer.Elapsed.TotalMilliseconds);
                         timer.Reset();
                         break;
+                    //TO DO: dodati MyHash varijante u Form 2
+                    case 8:
+                        var hashMD5_3 = new MyHash();
+                        timer.Start();
+                        hashMD5_3.MyMD5(array);
+                        //hashMD5_3.Clear(); Implementirati po potrebi
+                        timer.Stop();
+                        time.Add(timer.Elapsed.TotalMilliseconds);
+                        timer.Reset();
+                        break;
                     default:
                         break;
                 }
@@ -160,7 +170,7 @@ namespace SHA1_SHA256_MD5
         //Vraća listu odabranih hasheva
         List<int> PickedHash()
         {
-            bool[] a = { checkBoxSHA1_1.Checked, checkBoxSHA1_2.Checked, checkBoxSHA1_3.Checked, checkBoxSHA256_1.Checked, checkBoxSHA256_2.Checked, checkBoxSHA256_3.Checked, checkBoxMD5_1.Checked, checkBoxMD5_2.Checked };
+            bool[] a = { checkBoxSHA1_1.Checked, checkBoxSHA1_2.Checked, checkBoxSHA1_3.Checked, checkBoxSHA256_1.Checked, checkBoxSHA256_2.Checked, checkBoxSHA256_3.Checked, checkBoxMD5_1.Checked, checkBoxMD5_2.Checked, checkBoxMD5_3.Checked };
             List<int> picked = new List<int>();
             for (int i = 0; i < a.Length; i++)
             {
@@ -176,7 +186,7 @@ namespace SHA1_SHA256_MD5
         List<string> HashNames()
         {
             List<int> picked = PickedHash();
-            List<string> names = new List<string> { checkBoxSHA1_1.Text, checkBoxSHA1_2.Text, checkBoxSHA1_3.Text, checkBoxSHA256_1.Text, checkBoxSHA256_2.Text, checkBoxSHA256_3.Text, checkBoxMD5_1.Text, checkBoxMD5_2.Text };
+            List<string> names = new List<string> { checkBoxSHA1_1.Text, checkBoxSHA1_2.Text, checkBoxSHA1_3.Text, checkBoxSHA256_1.Text, checkBoxSHA256_2.Text, checkBoxSHA256_3.Text, checkBoxMD5_1.Text, checkBoxMD5_2.Text, checkBoxMD5_3.Text };
             List<string> pickednames = new List<string>();
             for(int i = 0; i < picked.Count; ++i)
             {

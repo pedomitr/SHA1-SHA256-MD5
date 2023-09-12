@@ -48,6 +48,8 @@ namespace SHA1_SHA256_MD5
             this.radioButtonUnesite = new System.Windows.Forms.RadioButton();
             this.radioButtonDatoteka = new System.Windows.Forms.RadioButton();
             this.buttonBack = new System.Windows.Forms.Button();
+            this.buttonMD5me = new System.Windows.Forms.Button();
+            this.textBoxMD5me = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // textBoxUnesite
@@ -126,7 +128,7 @@ namespace SHA1_SHA256_MD5
             // 
             // buttonRunAll
             // 
-            this.buttonRunAll.Location = new System.Drawing.Point(57, 353);
+            this.buttonRunAll.Location = new System.Drawing.Point(57, 405);
             this.buttonRunAll.Name = "buttonRunAll";
             this.buttonRunAll.Size = new System.Drawing.Size(75, 23);
             this.buttonRunAll.TabIndex = 9;
@@ -215,11 +217,31 @@ namespace SHA1_SHA256_MD5
             this.buttonBack.UseVisualStyleBackColor = true;
             this.buttonBack.Click += new System.EventHandler(this.buttonBack_Click);
             // 
+            // buttonMD5me
+            // 
+            this.buttonMD5me.Location = new System.Drawing.Point(57, 353);
+            this.buttonMD5me.Name = "buttonMD5me";
+            this.buttonMD5me.Size = new System.Drawing.Size(75, 23);
+            this.buttonMD5me.TabIndex = 19;
+            this.buttonMD5me.Text = "MD5me";
+            this.buttonMD5me.UseVisualStyleBackColor = true;
+            this.buttonMD5me.Click += new System.EventHandler(this.buttonMD5me_Click);
+            // 
+            // textBoxMD5me
+            // 
+            this.textBoxMD5me.Location = new System.Drawing.Point(138, 353);
+            this.textBoxMD5me.Name = "textBoxMD5me";
+            this.textBoxMD5me.ReadOnly = true;
+            this.textBoxMD5me.Size = new System.Drawing.Size(513, 22);
+            this.textBoxMD5me.TabIndex = 20;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(866, 450);
+            this.Controls.Add(this.textBoxMD5me);
+            this.Controls.Add(this.buttonMD5me);
             this.Controls.Add(this.buttonBack);
             this.Controls.Add(this.radioButtonDatoteka);
             this.Controls.Add(this.radioButtonUnesite);
@@ -265,6 +287,8 @@ namespace SHA1_SHA256_MD5
         private System.Windows.Forms.RadioButton radioButtonUnesite;
         private System.Windows.Forms.RadioButton radioButtonDatoteka;
         private System.Windows.Forms.Button buttonBack;
+        private System.Windows.Forms.Button buttonMD5me;
+        private System.Windows.Forms.TextBox textBoxMD5me;
     }
 }
 

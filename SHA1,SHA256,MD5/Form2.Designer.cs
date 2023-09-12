@@ -47,6 +47,7 @@ namespace SHA1_SHA256_MD5
             this.buttonDatoteka = new System.Windows.Forms.Button();
             this.textBoxDatoteka = new System.Windows.Forms.TextBox();
             this.buttonPregled = new System.Windows.Forms.Button();
+            this.checkBoxMD5_3 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -218,11 +219,22 @@ namespace SHA1_SHA256_MD5
             this.buttonPregled.UseVisualStyleBackColor = true;
             this.buttonPregled.Click += new System.EventHandler(this.buttonPregled_Click);
             // 
+            // checkBoxMD5_3
+            // 
+            this.checkBoxMD5_3.AutoSize = true;
+            this.checkBoxMD5_3.Location = new System.Drawing.Point(12, 290);
+            this.checkBoxMD5_3.Name = "checkBoxMD5_3";
+            this.checkBoxMD5_3.Size = new System.Drawing.Size(81, 21);
+            this.checkBoxMD5_3.TabIndex = 16;
+            this.checkBoxMD5_3.Text = "MD5My ";
+            this.checkBoxMD5_3.UseVisualStyleBackColor = true;
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1076, 535);
+            this.Controls.Add(this.checkBoxMD5_3);
             this.Controls.Add(this.buttonPregled);
             this.Controls.Add(this.textBoxDatoteka);
             this.Controls.Add(this.buttonDatoteka);
@@ -263,5 +275,6 @@ namespace SHA1_SHA256_MD5
         private System.Windows.Forms.TextBox textBoxDatoteka;
         private System.Windows.Forms.Button buttonPregled;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
+        private System.Windows.Forms.CheckBox checkBoxMD5_3;
     }
 }

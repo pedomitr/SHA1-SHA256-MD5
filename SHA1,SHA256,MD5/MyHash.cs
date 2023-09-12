@@ -15,17 +15,18 @@ namespace SHA1_SHA256_MD5
     {
         //TO DO dodati overload za unos iz text boxa i iz Dialoga
         //pseudocode: string uzima direktno i poziva MyMD5, a stream prvo pretvara u string pa poziva MyMD5
-        private void MyMD5(string text)
+        public void MyMD5(byte[] array)
         {
             //inicijalizacija
-            string message = "";
+            //string message = "";
             string hash;
-            byte[] bitmessage;
+            //byte[] bitmessage = array;
             List<byte> modmessage= new List<byte>();
-            bitmessage = ConvertStringToByteArray(message);//proslijediti text ili stream
-            modmessage.AddRange(bitmessage);
+            //bitmessage = ConvertStringToByteArray(message);//proslijediti text ili stream
+            //modmessage.AddRange(bitmessage);
+            modmessage.AddRange(array);
             //appendanje paddinga
-            AppendPadd(modmessage, Paddlength(bitmessage), bitmessage.Length);
+            AppendPadd(modmessage, Paddlength(array), array.Length);
             //Konverzija u uint list
             List<uint> imessage = new List<uint>();
             imessage.AddRange(ConvertByteListToIntList(modmessage));
