@@ -21,7 +21,7 @@ namespace SHA1_SHA256_MD5
             string message = "";
             string hash;
             byte[] bitmessage;
-            List<byte> mblock = new List<byte>();
+            List<uint> mblock = new List<uint>();
             List<byte> modmessage= new List<byte>();
             bitmessage = ConvertStringToByteArray(message);
             modmessage.AddRange(bitmessage);
@@ -29,18 +29,21 @@ namespace SHA1_SHA256_MD5
             //appendanje
             AppendPadd(modmessage, paddsize, bitmessage.Length);
             //Konverzija u int list
-            List<int> imessage = new List<int>();
+            List<uint> imessage = new List<uint>();
             imessage.AddRange(ConvertByteListToIntList(modmessage));
             //blok od 512 bita
-            mblock.AddRange(ExtractBlock(modmessage));
-            //pdoijeliti  blok na 128 bita i iz toga izvuči A, B, C, D od 32b ita
-            List<byte> sblock = new List<byte>();
-            sblock.AddRange(mblock.GetRange(0, 16));
-            List<byte> A = new List<byte>();
-            List<byte> B = new List<byte>();
-            List<byte> C = new List<byte>();
-            List<byte> D = new List<byte>();
-            SetABCD(sblock, A, B, C, D);
+            mblock.AddRange(ExtractBlock(imessage));
+            //inicijalizacija konstanti A, B, C, D
+            uint A = 0x67452301;
+            uint B = 0xefcdab89;
+            uint C = 0x98badcfe;
+            uint D = 0x10325476;
+            //inicijalizacija konstanti K
+            List<uint> K = new List<uint>();
+            for(int i = 0; i < 64; ++i)
+            {
+                K.Add((uint)Math.Floor(232 * Math.Abs(Math.Sin(i + 1))));
+            }
             //Pozvati prvi set rundi 1-16
 
         }
@@ -76,11 +79,11 @@ namespace SHA1_SHA256_MD5
 
         //TO DO
         //Podijeliti poruku na blokove od 512 bita/ 64 bytea
-        private List<byte> ExtractBlock(List<byte> modmessage)
+        private List<uint> ExtractBlock(List<uint> imessage)
         {
-            List<byte> block = new List<byte>();
-            block.AddRange(modmessage.GetRange(0, 64));
-            modmessage.RemoveRange(0, 64);
+            List<uint> block = new List<uint>();
+            block.AddRange(imessage.GetRange(0, 16));
+            imessage.RemoveRange(0, 64);
             return block;
         }
         //Proslijediti blok kroz runde
@@ -128,14 +131,14 @@ namespace SHA1_SHA256_MD5
             return BitConverter.ToString(array).Replace("-", "").ToLower();
         }
 
-        private List<int> ConvertByteListToIntList(List<byte> modmessage)
+        private List<uint> ConvertByteListToIntList(List<byte> modmessage)
         {
-            List<int> imessage = new List<int>();
+            List<uint> imessage = new List<uint>();
             List<byte> bmessage = new List<byte>();
             bmessage.AddRange(modmessage);//kasnije direktno koristiti modmessage zasad kopiramo !!!
             while ( bmessage.Count > 0)
             {
-                imessage.Add(bmessage[0] | bmessage[1] | bmessage[2] | bmessage[3]);
+                imessage.Add((uint)(bmessage[0] | bmessage[1] | bmessage[2] | bmessage[3]));
                 bmessage.RemoveRange(0, 4);
             }
             return imessage;           
