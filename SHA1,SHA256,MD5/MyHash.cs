@@ -71,23 +71,16 @@ namespace SHA1_SHA256_MD5
             return block;
         }
         //Proslijediti blok kroz runde
-        private void MD5F1(byte[] F1, byte[] A, byte[] B, byte[] C, byte[] D)
+        private List<byte> MD5F1(byte[] F1, byte[] A, byte[] B, byte[] C, byte[] D)
         {
             List<byte> result = new List<byte>();
             //byte result;
             for (int i = 0; i < A.Length; ++i)
             {
-                var opA = new BinaryOperator(A[i]);
-                var opB = new BinaryOperator(B[i]);
-                var opC = new BinaryOperator(C[i]);
-                var opD = new BinaryOperator(D[i]);
-                result.Add((byte)((opB.opA & opC.opA) | ((~opB.opA) & opD.opA)));
+                result.Add((byte)((B[i] & C[i]) | ((~B[i]) & D[i])));
             }
+            return result;
         }
-
-        
-       // public static MyHash operator | (MyHash a, MyHash b)
-           // => new  MyHash()
 
         private void MySHA1()
         {
