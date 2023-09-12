@@ -14,7 +14,7 @@ namespace SHA1_SHA256_MD5
     public class MyHash
     {
         //TO DO dodati overload za unos iz text boxa i iz Dialoga
-        //provjeriti duljinu poruke u bitovima i modulo 512
+        //pseudocode: string uzima direktno i poziva MyMD5, a stream prvo pretvara u string pa poziva MyMD5
         private void MyMD5(string text)
         {
             //inicijalizacija
@@ -52,7 +52,7 @@ namespace SHA1_SHA256_MD5
                 //ne zaboraviti refrešanje mblocka nakon rundi
             //Pozvati prvi set rundi 1-16
             hash = Rounds(a0, b0, c0, d0, K, s, imessage);
-            //Console.WriteLine(hash);
+            Console.WriteLine(hash);
         }
 
         //vraća podatak koliko je paddinga potrebno u bitovima + 64 bita za spremanje duljine originalne poruke
@@ -135,10 +135,10 @@ namespace SHA1_SHA256_MD5
                 B = (uint)(B + ((int)F << (int)s[i]));
             }
 
-            a0 = a0 + A;
-            b0 = b0 + B;
-            c0 = c0 + C;
-            d0 = d0 + D;
+            a0 += A;
+            b0 += B;
+            c0 += C;
+            d0 += D;
 
             if (imessage.Count > 0) Rounds(a0, b0, c0, d0, K, s, imessage);
             else
