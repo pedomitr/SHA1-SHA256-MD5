@@ -21,23 +21,20 @@ namespace SHA1_SHA256_MD5
             string message = "";
             string hash;
             byte[] bitmessage;
-            List<uint> mblock = new List<uint>();
             List<byte> modmessage= new List<byte>();
-            bitmessage = ConvertStringToByteArray(message);
+            bitmessage = ConvertStringToByteArray(message);//proslijediti text ili stream
             modmessage.AddRange(bitmessage);
-            int paddsize = Paddlength(bitmessage);//proslijediti direktno u funkciju
-            //appendanje
-            AppendPadd(modmessage, paddsize, bitmessage.Length);
-            //Konverzija u int list
+            //appendanje paddinga
+            AppendPadd(modmessage, Paddlength(bitmessage), bitmessage.Length);
+            //Konverzija u uint list
             List<uint> imessage = new List<uint>();
             imessage.AddRange(ConvertByteListToIntList(modmessage));
             //blok od 512 bita
-            mblock.AddRange(ExtractBlock(imessage));
             //inicijalizacija konstanti A, B, C, D
-            uint A = 0x67452301;
-            uint B = 0xefcdab89;
-            uint C = 0x98badcfe;
-            uint D = 0x10325476;
+            uint a0 = 0x67452301;
+            uint b0 = 0xefcdab89;
+            uint c0 = 0x98badcfe;
+            uint d0 = 0x10325476;
             //inicijalizacija konstanti K
             List<uint> K = new List<uint>();
             for(int i = 0; i < 64; ++i)
@@ -54,8 +51,8 @@ namespace SHA1_SHA256_MD5
                 //mblock lista sadržava 16 članova koji predstavljaju Mi,
                 //ne zaboraviti refrešanje mblocka nakon rundi
             //Pozvati prvi set rundi 1-16
-            Rounds(A, B, C, D, K, s, mblock);
-
+            hash = Rounds(a0, b0, c0, d0, K, s, imessage);
+            //Console.WriteLine(hash);
         }
 
         //vraća podatak koliko je paddinga potrebno u bitovima + 64 bita za spremanje duljine originalne poruke
@@ -87,7 +84,6 @@ namespace SHA1_SHA256_MD5
             modmessage.Concat(osize);
         }
 
-        //TO DO
         //Podijeliti poruku na blokove od 512 bita/ 64 bytea
         private List<uint> ExtractBlock(List<uint> imessage)
         {
@@ -96,37 +92,20 @@ namespace SHA1_SHA256_MD5
             imessage.RemoveRange(0, 16);
             return block;
         }
-        //Proslijediti blok kroz runde // višak
-        private List<byte> MD5F1(byte[] F1, byte[] A, byte[] B, byte[] C, byte[] D)
-        {
-            List<byte> result = new List<byte>();
-            //byte result;
-            for (int i = 0; i < A.Length; ++i)
-            {
-                result.Add((byte)((B[i] & C[i]) | ((~B[i]) & D[i])));
-            }
-            return result;
-        }
 
-        //Postavlja vrijednosti A,B,C,D // višak
-        private void SetABCD(List<byte> sblock, List<byte> A, List<byte> B, List<byte> C, List<byte> D)
+        //Obrađuje cijelu poruku i vraća hash u obiku stringa
+        private string Rounds(uint a0, uint b0, uint c0, uint d0, List<uint> K, uint[] s, List<uint> imessage)
         {
-            A.Clear();
-            B.Clear();
-            C.Clear();
-            D.Clear();
-            A.AddRange(sblock.GetRange(0, 4));
-            B.AddRange(sblock.GetRange(4, 4));
-            C.AddRange(sblock.GetRange(8, 4));
-            D.AddRange(sblock.GetRange(12, 4));
-        }
-
-        private void Rounds(uint A, uint B, uint C, uint D, List<uint> K, uint[] s, List<uint> mblock)
-        {
-            int i = 0;
+            int i;
             uint F = 0;
             int j = 0;
-            for(i = 0; i < 64; ++i)
+            uint A = a0;
+            uint B = b0;
+            uint C = c0;
+            uint D = d0;
+            List<uint> mblock = new List<uint>();
+            mblock.AddRange(ExtractBlock(imessage));
+            for (i = 0; i < 64; ++i)
             {
                 if( i >= 0 && i <= 15)
                 {
@@ -155,18 +134,25 @@ namespace SHA1_SHA256_MD5
                 C = B;
                 B = (uint)(B + ((int)F << (int)s[i]));
             }
+
+            a0 = a0 + A;
+            b0 = b0 + B;
+            c0 = c0 + C;
+            d0 = d0 + D;
+
+            if (imessage.Count > 0) Rounds(a0, b0, c0, d0, K, s, imessage);
+            else
+            {
+                List<byte> digest = new List<byte>();
+                digest.AddRange(BitConverter.GetBytes(a0));
+                digest.AddRange(BitConverter.GetBytes(b0));
+                digest.AddRange(BitConverter.GetBytes(c0));
+                digest.AddRange(BitConverter.GetBytes(d0));
+                return ConvertByteArrayToString(digest.ToArray());
+            }
+            return "Hash not found";
             //Dodati rekurziju koja obavlja runde dok se ne obradi cijela poruka,
             //Za veće poruke rekurzija može biti prezahtjevna??
-        }
-
-        private void MySHA1()
-        {
-
-        }
-
-        private void MySHA256()
-        {
-
         }
 
         byte[] ConvertStringToByteArray(string message)
@@ -190,6 +176,15 @@ namespace SHA1_SHA256_MD5
                 bmessage.RemoveRange(0, 4);
             }
             return imessage;           
+        }
+        private void MySHA1()
+        {
+
+        }
+
+        private void MySHA256()
+        {
+
         }
     }
 }
