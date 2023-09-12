@@ -30,6 +30,14 @@ namespace SHA1_SHA256_MD5
             AppendPadd(modmessage, paddsize, bitmessage.Length);
             //blok od 512 bita
             mblock.AddRange(ExtractBlock(modmessage));
+            //pdoijeliti  blok na 128 bita i iz toga izvuči A, B, C, D od 32b ita
+            List<byte> sblock = new List<byte>();
+            sblock.AddRange(mblock.GetRange(0, 16));
+            List<byte> A = new List<byte>();
+            List<byte> B = new List<byte>();
+            List<byte> C = new List<byte>();
+            List<byte> D = new List<byte>();
+            SetABCD(sblock, A, B, C, D);
         }
 
         //vraća podatak koliko je paddinga potrebno u bitovima + 64 bita za spremanje duljine originalne poruke
@@ -80,6 +88,19 @@ namespace SHA1_SHA256_MD5
                 result.Add((byte)((B[i] & C[i]) | ((~B[i]) & D[i])));
             }
             return result;
+        }
+
+        //Postavlja vrijednosti A,B,C,D
+        private void SetABCD(List<byte> sblock, List<byte> A, List<byte> B, List<byte> C, List<byte> D)
+        {
+            A.Clear();
+            B.Clear();
+            C.Clear();
+            D.Clear();
+            A.AddRange(sblock.GetRange(0, 4));
+            B.AddRange(sblock.GetRange(4, 4));
+            C.AddRange(sblock.GetRange(8, 4));
+            D.AddRange(sblock.GetRange(12, 4));
         }
 
         private void MySHA1()
