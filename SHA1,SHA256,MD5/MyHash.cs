@@ -70,19 +70,15 @@ namespace SHA1_SHA256_MD5
         {           
             //Sprema duljinu originalne poruke u 64 bita
             List<byte> osize = new List<byte>(BitConverter.GetBytes((Int64)(modmessage.Count << 32)));
-            //minimalna veličina padinga je 65(teoretski zapravo 72 pošto pretvramo sa UTF8, a max 
-            //dodamo prvo 1 i sedam 0 pošto je to minimum u ovom sustavu, zatim 0 dok nije 512 - 64
-            modmessage.Add(255);// 8 bita
-            int paddsize = modmessage.Count % 64;
-            //dodajemo mjesta tako da duljina poruke bude %512 bita
-            if (paddsize < (64 - 8)) paddsize += 43; // 1 smo već dodali
+            modmessage.Add(255);// appendamo 1, 8 bita
+            int paddsize = 64 - ((modmessage.Count * 8 % 512)/8); //prostor za padding do 64 bytea         
+            if (paddsize < 8) paddsize = paddsize%8 + 64;//dodajemo mjesta tako da duljina je poruke %512 bita
             while (paddsize - 8 > 0) //ostavljamo mjesta za zadnja 64 bita/8 bytea i popunjavamo nule
             {
                 modmessage.Add(0);
                 --paddsize;
-            }           
-            //dodajemo veličinu originalne poruke           
-            modmessage.AddRange(osize);// 64 bita
+            }                    
+            modmessage.AddRange(osize);//dodajemo veličinu originalne poruke,  64 bita
         }
 
         //Podijeliti poruku na blokove od 512 bita/ 64 bytea
