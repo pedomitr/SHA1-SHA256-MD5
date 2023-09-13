@@ -99,12 +99,12 @@ namespace SHA1_SHA256_MD5
                     F = (B & D) | (C & (~D));
                     j = (((5 * i) + 1) % 16);
                 }
-                else if (i >= 16 && i <= 31)
+                else if (i >= 32 && i <= 47)
                 {
                     F = B ^ C ^ D;
                     j = (((3 * i) + 5) % 16);
                 }
-                else if (i >= 16 && i <= 31)
+                else if (i >= 48 && i <= 63)
                 {
                     F = C ^ (B | (~D));
                     j = ((7 * i) % 16);
