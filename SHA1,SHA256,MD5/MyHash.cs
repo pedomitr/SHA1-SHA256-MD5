@@ -13,8 +13,6 @@ namespace SHA1_SHA256_MD5
 {
     public class MyHash
     {
-        //TO DO dodati overload za unos iz text boxa i iz Dialoga
-        //pseudocode: string uzima direktno i poziva MyMD5, a stream prvo pretvara u string pa poziva MyMD5
         public string MyMD5(byte[] array)
         {
             //inicijalizacija
