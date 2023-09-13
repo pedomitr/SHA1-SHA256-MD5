@@ -69,21 +69,24 @@ namespace SHA1_SHA256_MD5
         {
             //minimalna veličina padinga je 65(teoretski zapravo 72 pošto pretvramo sa UTF8, a max 
             //dodamo prvo 1 i sedam 0 pošto je to minimum u ovom sustavu
-            modmessage.Add(128);
+            modmessage.Add(255);
             while(paddsize-8 > 0)
             {
                 modmessage.Add(0);
                 --paddsize;
             }
-            List<byte> osize = new List<byte>();//broj 0 od 64 bita za veličinu poruke
-            osize.Append((byte)(8 * leng));
+            List<byte> osize = new List<byte>(BitConverter.GetBytes((Int64)(leng << 32)));
+            //List<byte> osize = new List<byte>();//broj 0 od 64 bita za veličinu poruke
+            //osize.Append(b);// zašto *8 !!! treba biti modulo 64 zbrajanje dakle (int << 32) | 
+            //gore računati u zasebnu varijablu pa dodati??
             //populira ostatak veličine poruke nulama dok se ne ispune sva 64 bita
+            // višak
             while(osize.Count < 8)
             {
                 osize.Insert(0, 0);               
             }
             //dodajemo veličinu originalne poruke           
-            modmessage.Concat(osize);
+            modmessage.AddRange(osize);
         }
 
         //Podijeliti poruku na blokove od 512 bita/ 64 bytea
@@ -169,15 +172,15 @@ namespace SHA1_SHA256_MD5
 
         private List<uint> ConvertByteListToIntList(List<byte> modmessage)
         {
-            List<uint> imessage = new List<uint>();
+            List<uint> uimessage = new List<uint>();
             List<byte> bmessage = new List<byte>();
             bmessage.AddRange(modmessage);//kasnije direktno koristiti modmessage zasad kopiramo !!!
             while ( bmessage.Count > 0)
             {
-                imessage.Add((uint)(bmessage[0] | bmessage[1] | bmessage[2] | bmessage[3]));
+                uimessage.Add((uint)((((((bmessage[0] << 8) | bmessage[1]) << 8) | bmessage[2]) << 8) | bmessage[3]));
                 bmessage.RemoveRange(0, 4);
             }
-            return imessage;           
+            return uimessage;           
         }
         private void MySHA1()
         {
