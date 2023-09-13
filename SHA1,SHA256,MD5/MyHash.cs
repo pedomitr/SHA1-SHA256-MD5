@@ -26,7 +26,7 @@ namespace SHA1_SHA256_MD5
             //modmessage.AddRange(bitmessage);
             modmessage.AddRange(array);
             //appendanje paddinga
-            AppendPadd(modmessage, Paddlength(array), array.Length);
+            AppendPadd(modmessage);
             //Konverzija u uint list
             List<uint> imessage = new List<uint>();
             imessage.AddRange(ConvertByteListToIntList(modmessage));
@@ -57,6 +57,7 @@ namespace SHA1_SHA256_MD5
         }
 
         //vraća podatak koliko je paddinga potrebno u bitovima + 64 bita za spremanje duljine originalne poruke
+        //višak prebaciti direktno u funkciju AppendPadd
         private int Paddlength(byte[] array)
         {
             int paddinglength = (array.Length * 8) % 512;
@@ -65,28 +66,23 @@ namespace SHA1_SHA256_MD5
         }
 
         //dodaje padding i veličinu originalne poruke
-        private void AppendPadd(List<byte> modmessage, int paddsize, int leng)
-        {
+        private void AppendPadd(List<byte> modmessage)
+        {           
+            //Sprema duljinu originalne poruke u 64 bita
+            List<byte> osize = new List<byte>(BitConverter.GetBytes((Int64)(modmessage.Count << 32)));
             //minimalna veličina padinga je 65(teoretski zapravo 72 pošto pretvramo sa UTF8, a max 
-            //dodamo prvo 1 i sedam 0 pošto je to minimum u ovom sustavu
-            modmessage.Add(255);
-            while(paddsize-8 > 0)
+            //dodamo prvo 1 i sedam 0 pošto je to minimum u ovom sustavu, zatim 0 dok nije 512 - 64
+            modmessage.Add(255);// 8 bita
+            int paddsize = modmessage.Count % 64;
+            //dodajemo mjesta tako da duljina poruke bude %512 bita
+            if (paddsize < (64 - 8)) paddsize += 43; // 1 smo već dodali
+            while (paddsize - 8 > 0) //ostavljamo mjesta za zadnja 64 bita/8 bytea i popunjavamo nule
             {
                 modmessage.Add(0);
                 --paddsize;
-            }
-            List<byte> osize = new List<byte>(BitConverter.GetBytes((Int64)(leng << 32)));
-            //List<byte> osize = new List<byte>();//broj 0 od 64 bita za veličinu poruke
-            //osize.Append(b);// zašto *8 !!! treba biti modulo 64 zbrajanje dakle (int << 32) | 
-            //gore računati u zasebnu varijablu pa dodati??
-            //populira ostatak veličine poruke nulama dok se ne ispune sva 64 bita
-            // višak
-            while(osize.Count < 8)
-            {
-                osize.Insert(0, 0);               
-            }
+            }           
             //dodajemo veličinu originalne poruke           
-            modmessage.AddRange(osize);
+            modmessage.AddRange(osize);// 64 bita
         }
 
         //Podijeliti poruku na blokove od 512 bita/ 64 bytea
