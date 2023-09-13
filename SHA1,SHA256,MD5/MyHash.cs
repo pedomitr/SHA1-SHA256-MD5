@@ -15,15 +15,10 @@ namespace SHA1_SHA256_MD5
     {
         //TO DO dodati overload za unos iz text boxa i iz Dialoga
         //pseudocode: string uzima direktno i poziva MyMD5, a stream prvo pretvara u string pa poziva MyMD5
-        public void MyMD5(byte[] array)
+        public string MyMD5(byte[] array)
         {
             //inicijalizacija
-            //string message = "";
-            string hash;
-            //byte[] bitmessage = array;
             List<byte> modmessage= new List<byte>();
-            //bitmessage = ConvertStringToByteArray(message);//proslijediti text ili stream
-            //modmessage.AddRange(bitmessage);
             modmessage.AddRange(array);
             //appendanje paddinga
             AppendPadd(modmessage);
@@ -43,7 +38,6 @@ namespace SHA1_SHA256_MD5
                 K.Add((uint)Math.Floor(232 * Math.Abs(Math.Sin(i + 1))));
             }
             //Lista pomaka po rundi
-           // List<uint> s = new List<uint>(); //array je ovdje možda bolji
             uint[] s = { 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22,        //runde 1-16
                           5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,    //runde 17-32
                           4, 11, 16, 23,  4, 11, 16, 23,  4, 11, 16, 23,  4, 11, 16, 23,    //runde 33 48
@@ -51,18 +45,9 @@ namespace SHA1_SHA256_MD5
             //Podijeliti poruku u 32 bitne riječi Mi
                 //mblock lista sadržava 16 članova koji predstavljaju Mi,
                 //ne zaboraviti refrešanje mblocka nakon rundi
-            //Pozvati prvi set rundi 1-16
-            hash = Rounds(a0, b0, c0, d0, K, s, imessage);
-            Console.WriteLine(hash);
-        }
-
-        //vraća podatak koliko je paddinga potrebno u bitovima + 64 bita za spremanje duljine originalne poruke
-        //višak prebaciti direktno u funkciju AppendPadd
-        private int Paddlength(byte[] array)
-        {
-            int paddinglength = (array.Length * 8) % 512;
-            if (paddinglength < (512 - (64 + 8))) return (paddinglength + 512 + 8)/8;//64 +1 po algoritmu, nam definira logični minimum od 8 bitova pa to koristimo
-            return (paddinglength + 8)/8;// dijelimo sa 8 pošto računamo sa byte moguća nepreciznost!!!
+            //Vraća hash
+            return Rounds(a0, b0, c0, d0, K, s, imessage);
+           // Console.WriteLine(hash.ToString());
         }
 
         //dodaje padding i veličinu originalne poruke
@@ -145,8 +130,8 @@ namespace SHA1_SHA256_MD5
                 digest.AddRange(BitConverter.GetBytes(b0));
                 digest.AddRange(BitConverter.GetBytes(c0));
                 digest.AddRange(BitConverter.GetBytes(d0));
-                return ConvertByteArrayToString(digest.ToArray());
-            }
+                return digest.ToString();
+            }          
             return "Hash not found";
             //Dodati rekurziju koja obavlja runde dok se ne obradi cijela poruka,
             //Za veće poruke rekurzija može biti prezahtjevna??

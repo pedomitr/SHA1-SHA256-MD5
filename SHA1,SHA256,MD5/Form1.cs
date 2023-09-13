@@ -43,7 +43,7 @@ namespace SHA1_SHA256_MD5
             hashSHA1.Clear();
         }
 
-        public void SHA256(byte[] array)
+        private void SHA256(byte[] array)
         {
             var hashSHA256 = new SHA256Cng();
             textBoxSHA256.Text = ConvertByteArrayToString(hashSHA256.ComputeHash(array));
@@ -78,6 +78,7 @@ namespace SHA1_SHA256_MD5
             buttonSHA1_Click(sender, e);
             buttonSHA256_Click(sender, e);
             buttonMD5_Click(sender, e);
+            buttonMD5me_Click(sender, e);
 
         }
 
@@ -164,10 +165,11 @@ namespace SHA1_SHA256_MD5
             Hide();          
         }
 
+        //Moji hashevi
         private void buttonMD5me_Click(object sender, EventArgs e)
         {
-            MyHash MD5me = new MyHash();
-            MD5me.MyMD5(ConvertStringToByteArray());
+            var MD5me = new MyHash();
+            textBoxMD5me.Text = MD5me.MyMD5(ConvertStringToByteArray());
         }
     }
 }
