@@ -32,6 +32,7 @@ namespace SHA1_SHA256_MD5
                 SHA1(File.ReadAllBytes(open.FileName));
                 SHA256(File.ReadAllBytes(open.FileName));
                 MD5(File.ReadAllBytes(open.FileName));
+                MD5me(File.ReadAllBytes(open.FileName));
             }
         }
 
@@ -55,6 +56,12 @@ namespace SHA1_SHA256_MD5
             var hashMD5 = new MD5Cng();
             textBoxMD5.Text = ConvertByteArrayToString(hashMD5.ComputeHash(array));
             hashMD5.Clear();
+        }
+        private void MD5me(byte[] array)
+        {
+            var hashMD5me = new MyHash();
+            textBoxMD5me.Text = hashMD5me.MyMD5(array);
+            //hashMD5.Clear();
         }
 
         //Gumbi koji pokreću hashiranje unesenog teksta u TextBoxUnesite
@@ -168,8 +175,7 @@ namespace SHA1_SHA256_MD5
         //Moji hashevi
         private void buttonMD5me_Click(object sender, EventArgs e)
         {
-            var MD5me = new MyHash();
-            textBoxMD5me.Text = MD5me.MyMD5(ConvertStringToByteArray());
+           MD5me((ConvertStringToByteArray()));
         }
     }
 }
