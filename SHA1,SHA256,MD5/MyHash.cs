@@ -57,7 +57,7 @@ namespace SHA1_SHA256_MD5
             List<byte> osize = new List<byte>(BitConverter.GetBytes((Int64)(modmessage.Count << 32)));
             modmessage.Add(255);// appendamo 1, 8 bita
             int paddsize = 64 - ((modmessage.Count * 8 % 512)/8); //prostor za padding do 64 bytea         
-            if (paddsize < 8) paddsize = paddsize%8 + 64;//dodajemo mjesta tako da duljina je poruke %512 bita
+            if (paddsize < 8) paddsize = paddsize % 8 + 64;//dodajemo mjesta tako da duljina je poruke %512 bita
             while (paddsize - 8 > 0) //ostavljamo mjesta za zadnja 64 bita/8 bytea i popunjavamo nule
             {
                 modmessage.Add(0);
@@ -122,19 +122,17 @@ namespace SHA1_SHA256_MD5
             c0 += C;
             d0 += D;
 
-            if (imessage.Count > 0) Rounds(a0, b0, c0, d0, K, s, imessage);
-            else
+            if (imessage.Count == 0)
             {
                 List<byte> digest = new List<byte>();
                 digest.AddRange(BitConverter.GetBytes(a0));
                 digest.AddRange(BitConverter.GetBytes(b0));
                 digest.AddRange(BitConverter.GetBytes(c0));
                 digest.AddRange(BitConverter.GetBytes(d0));
-                return ConvertByteArrayToString(digest.ToArray());
-            }          
-            return "Hash not found";
-            //Dodati rekurziju koja obavlja runde dok se ne obradi cijela poruka,
-            //Za veće poruke rekurzija može biti prezahtjevna??
+                string fdigest = ConvertByteArrayToString(digest.ToArray()); 
+               return fdigest;//promijeniti direktno return nakon debugiranja            
+            }
+            else return Rounds(a0, b0, c0, d0, K, s, imessage);
         }
 
         byte[] ConvertStringToByteArray(string message)
