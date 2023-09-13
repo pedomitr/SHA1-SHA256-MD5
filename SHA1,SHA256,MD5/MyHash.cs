@@ -130,7 +130,7 @@ namespace SHA1_SHA256_MD5
                 digest.AddRange(BitConverter.GetBytes(b0));
                 digest.AddRange(BitConverter.GetBytes(c0));
                 digest.AddRange(BitConverter.GetBytes(d0));
-                return digest.ToString();
+                return ConvertByteArrayToString(digest.ToArray());
             }          
             return "Hash not found";
             //Dodati rekurziju koja obavlja runde dok se ne obradi cijela poruka,
