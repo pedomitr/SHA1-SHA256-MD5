@@ -57,11 +57,11 @@ namespace SHA1_SHA256_MD5
         }
 
         //vraća podatak koliko je paddinga potrebno u bitovima + 64 bita za spremanje duljine originalne poruke
-        private int Paddlength(byte[] bitmessage)
+        private int Paddlength(byte[] array)
         {
-            int paddinglength = (bitmessage.Length * 8) % 512;
-            if (paddinglength < (512 - (64 + 8))) return (paddinglength + 512)/8;//64 +1 po algoritmu, nam definira logični minimum od 8 bitova pa to koristimo
-            return paddinglength/8;// dijelimo sa 8 pošto računamo sa byte moguća nepreciznost!!!
+            int paddinglength = (array.Length * 8) % 512;
+            if (paddinglength < (512 - (64 + 8))) return (paddinglength + 512 + 8)/8;//64 +1 po algoritmu, nam definira logični minimum od 8 bitova pa to koristimo
+            return (paddinglength + 8)/8;// dijelimo sa 8 pošto računamo sa byte moguća nepreciznost!!!
         }
 
         //dodaje padding i veličinu originalne poruke
