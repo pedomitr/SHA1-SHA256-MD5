@@ -73,6 +73,7 @@ namespace SHA1_SHA256_MD5
             while(paddsize-8 > 0)
             {
                 modmessage.Add(0);
+                --paddsize;
             }
             List<byte> osize = new List<byte>();//broj 0 od 64 bita za veličinu poruke
             osize.Append((byte)(8 * leng));
