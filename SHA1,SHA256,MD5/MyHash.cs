@@ -247,7 +247,11 @@ namespace SHA1_SHA256_MD5
             if (imessage.Count == 0)
             {
                 List<byte> digest = new List<byte>();
-                digest.AddRange(BitConverter.GetBytes((a0 << 128) | (b0 << 96) | (c0 << 64) | (d0 << 32) | e0));
+                digest.AddRange(BitConverter.GetBytes(a0));
+                digest.AddRange(BitConverter.GetBytes(b0));
+                digest.AddRange(BitConverter.GetBytes(c0));
+                digest.AddRange(BitConverter.GetBytes(d0));
+                digest.AddRange(BitConverter.GetBytes(e0));
                 string fdigest = ConvertByteArrayToString(digest.ToArray());
                 return fdigest;//promijeniti direktno return nakon debugiranja            
             }
