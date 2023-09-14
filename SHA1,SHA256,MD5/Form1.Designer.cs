@@ -50,6 +50,13 @@ namespace SHA1_SHA256_MD5
             this.buttonBack = new System.Windows.Forms.Button();
             this.buttonMD5me = new System.Windows.Forms.Button();
             this.textBoxMD5me = new System.Windows.Forms.TextBox();
+            this.buttonSHA1me = new System.Windows.Forms.Button();
+            this.buttonSHA256me = new System.Windows.Forms.Button();
+            this.buttonMD5meCopy = new System.Windows.Forms.Button();
+            this.buttonSHA1meCopy = new System.Windows.Forms.Button();
+            this.buttonSHA256meCopy = new System.Windows.Forms.Button();
+            this.textBoxSHA1me = new System.Windows.Forms.TextBox();
+            this.textBoxSHA256me = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // textBoxUnesite
@@ -128,7 +135,7 @@ namespace SHA1_SHA256_MD5
             // 
             // buttonRunAll
             // 
-            this.buttonRunAll.Location = new System.Drawing.Point(57, 405);
+            this.buttonRunAll.Location = new System.Drawing.Point(57, 480);
             this.buttonRunAll.Name = "buttonRunAll";
             this.buttonRunAll.Size = new System.Drawing.Size(75, 23);
             this.buttonRunAll.TabIndex = 9;
@@ -209,7 +216,7 @@ namespace SHA1_SHA256_MD5
             // 
             // buttonBack
             // 
-            this.buttonBack.Location = new System.Drawing.Point(725, 405);
+            this.buttonBack.Location = new System.Drawing.Point(725, 480);
             this.buttonBack.Name = "buttonBack";
             this.buttonBack.Size = new System.Drawing.Size(75, 23);
             this.buttonBack.TabIndex = 18;
@@ -235,11 +242,84 @@ namespace SHA1_SHA256_MD5
             this.textBoxMD5me.Size = new System.Drawing.Size(513, 22);
             this.textBoxMD5me.TabIndex = 20;
             // 
+            // buttonSHA1me
+            // 
+            this.buttonSHA1me.Location = new System.Drawing.Point(57, 382);
+            this.buttonSHA1me.Name = "buttonSHA1me";
+            this.buttonSHA1me.Size = new System.Drawing.Size(75, 23);
+            this.buttonSHA1me.TabIndex = 21;
+            this.buttonSHA1me.Text = "SHA1me";
+            this.buttonSHA1me.UseVisualStyleBackColor = true;
+            this.buttonSHA1me.Click += new System.EventHandler(this.buttonSHA1me_Click);
+            // 
+            // buttonSHA256me
+            // 
+            this.buttonSHA256me.Location = new System.Drawing.Point(45, 411);
+            this.buttonSHA256me.Name = "buttonSHA256me";
+            this.buttonSHA256me.Size = new System.Drawing.Size(87, 23);
+            this.buttonSHA256me.TabIndex = 22;
+            this.buttonSHA256me.Text = "SHA256me";
+            this.buttonSHA256me.UseVisualStyleBackColor = true;
+            this.buttonSHA256me.Click += new System.EventHandler(this.buttonSHA256me_Click);
+            // 
+            // buttonMD5meCopy
+            // 
+            this.buttonMD5meCopy.Location = new System.Drawing.Point(657, 350);
+            this.buttonMD5meCopy.Name = "buttonMD5meCopy";
+            this.buttonMD5meCopy.Size = new System.Drawing.Size(143, 25);
+            this.buttonMD5meCopy.TabIndex = 23;
+            this.buttonMD5meCopy.Text = "Copy to Clipboard";
+            this.buttonMD5meCopy.UseVisualStyleBackColor = true;
+            this.buttonMD5meCopy.Click += new System.EventHandler(this.buttonMD5meCopy_Click);
+            // 
+            // buttonSHA1meCopy
+            // 
+            this.buttonSHA1meCopy.Location = new System.Drawing.Point(657, 382);
+            this.buttonSHA1meCopy.Name = "buttonSHA1meCopy";
+            this.buttonSHA1meCopy.Size = new System.Drawing.Size(143, 25);
+            this.buttonSHA1meCopy.TabIndex = 24;
+            this.buttonSHA1meCopy.Text = "Copy to Clipboard";
+            this.buttonSHA1meCopy.UseVisualStyleBackColor = true;
+            this.buttonSHA1meCopy.Click += new System.EventHandler(this.buttonSHA1meCopy_Click);
+            // 
+            // buttonSHA256meCopy
+            // 
+            this.buttonSHA256meCopy.Location = new System.Drawing.Point(657, 413);
+            this.buttonSHA256meCopy.Name = "buttonSHA256meCopy";
+            this.buttonSHA256meCopy.Size = new System.Drawing.Size(143, 25);
+            this.buttonSHA256meCopy.TabIndex = 25;
+            this.buttonSHA256meCopy.Text = "Copy to Clipboard";
+            this.buttonSHA256meCopy.UseVisualStyleBackColor = true;
+            this.buttonSHA256meCopy.Click += new System.EventHandler(this.buttonSHA256meCopy_Click);
+            // 
+            // textBoxSHA1me
+            // 
+            this.textBoxSHA1me.Location = new System.Drawing.Point(138, 382);
+            this.textBoxSHA1me.Name = "textBoxSHA1me";
+            this.textBoxSHA1me.ReadOnly = true;
+            this.textBoxSHA1me.Size = new System.Drawing.Size(513, 22);
+            this.textBoxSHA1me.TabIndex = 26;
+            // 
+            // textBoxSHA256me
+            // 
+            this.textBoxSHA256me.Location = new System.Drawing.Point(138, 414);
+            this.textBoxSHA256me.Name = "textBoxSHA256me";
+            this.textBoxSHA256me.ReadOnly = true;
+            this.textBoxSHA256me.Size = new System.Drawing.Size(513, 22);
+            this.textBoxSHA256me.TabIndex = 27;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(866, 450);
+            this.ClientSize = new System.Drawing.Size(866, 515);
+            this.Controls.Add(this.textBoxSHA256me);
+            this.Controls.Add(this.textBoxSHA1me);
+            this.Controls.Add(this.buttonSHA256meCopy);
+            this.Controls.Add(this.buttonSHA1meCopy);
+            this.Controls.Add(this.buttonMD5meCopy);
+            this.Controls.Add(this.buttonSHA256me);
+            this.Controls.Add(this.buttonSHA1me);
             this.Controls.Add(this.textBoxMD5me);
             this.Controls.Add(this.buttonMD5me);
             this.Controls.Add(this.buttonBack);
@@ -289,6 +369,13 @@ namespace SHA1_SHA256_MD5
         private System.Windows.Forms.Button buttonBack;
         private System.Windows.Forms.Button buttonMD5me;
         private System.Windows.Forms.TextBox textBoxMD5me;
+        private System.Windows.Forms.Button buttonSHA1me;
+        private System.Windows.Forms.Button buttonSHA256me;
+        private System.Windows.Forms.Button buttonMD5meCopy;
+        private System.Windows.Forms.Button buttonSHA1meCopy;
+        private System.Windows.Forms.Button buttonSHA256meCopy;
+        private System.Windows.Forms.TextBox textBoxSHA1me;
+        private System.Windows.Forms.TextBox textBoxSHA256me;
     }
 }
 

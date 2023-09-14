@@ -33,6 +33,8 @@ namespace SHA1_SHA256_MD5
                 SHA256(File.ReadAllBytes(open.FileName));
                 MD5(File.ReadAllBytes(open.FileName));
                 MD5me(File.ReadAllBytes(open.FileName));
+                SHA1me(File.ReadAllBytes(open.FileName));
+                SHA256me(File.ReadAllBytes(open.FileName));
             }
         }
 
@@ -64,6 +66,20 @@ namespace SHA1_SHA256_MD5
             //hashMD5.Clear();
         }
 
+        private void SHA1me(byte[] array)
+        {
+            var hashSHA1me = new MyHash();
+            textBoxMD5me.Text = hashSHA1me.MySHA1(array);
+            //hashMD5.Clear();
+        }
+
+        private void SHA256me(byte[] array)
+        {
+            var hashSHA256me = new MyHash();
+            textBoxMD5me.Text = hashSHA256me.MySHA256(array);
+            //hashMD5.Clear();
+        }
+
         //Gumbi koji pokreću hashiranje unesenog teksta u TextBoxUnesite
         private void buttonSHA1_Click(object sender, EventArgs e)
         {
@@ -86,6 +102,8 @@ namespace SHA1_SHA256_MD5
             buttonSHA256_Click(sender, e);
             buttonMD5_Click(sender, e);
             buttonMD5me_Click(sender, e);
+            buttonSHA1me_Click(sender, e);
+            buttonSHA256me_Click(sender, e);
 
         }
 
@@ -140,6 +158,8 @@ namespace SHA1_SHA256_MD5
                 buttonSHA256.Enabled = true;
                 buttonMD5.Enabled = true;
                 buttonMD5me.Enabled = true;
+                buttonSHA1me.Enabled = true;
+                buttonSHA256me.Enabled = true;
                 buttonRunAll.Enabled = true;
 
             }
@@ -161,6 +181,8 @@ namespace SHA1_SHA256_MD5
                 buttonSHA256.Enabled = false;
                 buttonMD5.Enabled = false;
                 buttonMD5me.Enabled = false;
+                buttonSHA1me.Enabled = false;
+                buttonSHA256me.Enabled = false;
                 buttonRunAll.Enabled = false;
             }
         }
@@ -175,7 +197,32 @@ namespace SHA1_SHA256_MD5
         //Moji hashevi
         private void buttonMD5me_Click(object sender, EventArgs e)
         {
-           MD5me((ConvertStringToByteArray()));
+           MD5me(ConvertStringToByteArray());
+        }
+
+        private void buttonSHA1me_Click(object sender, EventArgs e)
+        {
+            SHA1me(ConvertStringToByteArray());
+        }
+
+        private void buttonSHA256me_Click(object sender, EventArgs e)
+        {
+            SHA256me(ConvertStringToByteArray());
+        }
+
+        private void buttonMD5meCopy_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(textBoxMD5me.Text);
+        }
+
+        private void buttonSHA1meCopy_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(textBoxSHA1me.Text);
+        }
+
+        private void buttonSHA256meCopy_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(textBoxSHA256me.Text);
         }
     }
 }

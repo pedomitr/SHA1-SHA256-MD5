@@ -52,7 +52,7 @@ namespace SHA1_SHA256_MD5
         private void AppendPaddMD5(List<byte> modmessage)
         {           
             //Sprema duljinu originalne poruke u 64 bita
-            List<byte> osize = new List<byte>(BitConverter.GetBytes((Int64)(modmessage.Count << 32)));
+            List<byte> osize = new List<byte>(BitConverter.GetBytes((Int64)((modmessage.Count * 8) << 32)));
             modmessage.Add(0x80);// appendamo 1, 8 bita
             int paddsize = 64 - ((modmessage.Count * 8 % 512)/8); //prostor za padding do 64 bytea         
             if (paddsize < 8) paddsize = paddsize % 8 + 64;//dodajemo mjesta tako da duljina je poruke %512 bita
@@ -155,7 +155,7 @@ namespace SHA1_SHA256_MD5
             }
             return uimessage;           
         }
-        private string MySHA1(byte[] array)
+        public string MySHA1(byte[] array)
         {
             //inicijalizacija
             List<byte> modmessage = new List<byte>();
@@ -164,12 +164,13 @@ namespace SHA1_SHA256_MD5
             long ml = array.Length * 8;
             //appendanje paddinga
             modmessage.Add(0x80);
-            long paddsize = ((ml - 64) % 512) / 8;
+            long paddsize = Math.Abs(((ml + 1) % 512) - 448) / 8;// 
             while (paddsize > 0) //ostavljamo mjesta za zadnja 64 bita/8 bytea i popunjavamo nule
             {
-                modmessage.Add(0);
+                modmessage.Add(0x00);
                 --paddsize;
             }
+            modmessage.AddRange(BitConverter.GetBytes(ml));
 
             //Konverzija u uint list
             List<uint> imessage = new List<uint>();
@@ -255,9 +256,9 @@ namespace SHA1_SHA256_MD5
             // Console.WriteLine(hash.ToString());
         }
 
-        private void MySHA256()
+        public string MySHA256(byte[] array)
         {
-
+            return null;
         }
     }
 }
