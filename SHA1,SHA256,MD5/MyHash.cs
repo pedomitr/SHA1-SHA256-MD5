@@ -176,7 +176,7 @@ namespace SHA1_SHA256_MD5
             List<uint> imessage = new List<uint>();
             imessage.AddRange(ConvertByteListToIntList(modmessage));
 
-            //inicijalizacija konstanti A, B, C, D
+            //inicijalizacija konstanti A, B, C, D, E
             uint a0 = 0x67452301;
             uint b0 = 0xefcdab89;
             uint c0 = 0x98badcfe;
@@ -262,7 +262,142 @@ namespace SHA1_SHA256_MD5
 
         public string MySHA256(byte[] array)
         {
-            return null;
+            //inicijalizacija
+            List<byte> modmessage = new List<byte>();
+            modmessage.AddRange(array);
+            //Duljina poruke u bitovima 64 bita
+            long ml = array.Length * 8;
+            //appendanje paddinga
+            modmessage.Add(0x80);
+            long paddsize = Math.Abs(((ml + 1) % 512) - 448) / 8;// 
+            while (paddsize > 0) //ostavljamo mjesta za zadnja 64 bita/8 bytea i popunjavamo nule
+            {
+                modmessage.Add(0x00);
+                --paddsize;
+            }
+            modmessage.AddRange(BitConverter.GetBytes(ml));
+
+            //Konverzija u uint list
+            List<uint> imessage = new List<uint>();
+            imessage.AddRange(ConvertByteListToIntList(modmessage));
+
+            //inicijalizacija konstanti A, B, C, D, E, F, G, H
+            uint a0 = 0x6a09e667;
+            uint b0 = 0xbb67ae85;
+            uint c0 = 0x3c6ef372;
+            uint d0 = 0xa54ff53a;
+            uint e0 = 0x510e527f;
+            uint f0 = 0x9b05688c;
+            uint g0 = 0x1f83d9ab;
+            uint h0 = 0x5be0cd19;
+
+            //Inicijalizacija konstante k
+            List<uint> K = new List<uint>();
+            List<int> prime = PrimeNumbers(64);
+            for (int i = 0; i < 64; ++i)
+            {
+                //K.Add((uint)Math.Floor(Math.Pow(pr, -3)(Math.Sin(i + 1))));
+            }
+            //Vraća hash
+            return RoundsSHA256(a0, b0, c0, d0, e0, imessage);
+        }
+
+        private string RoundsSHA256(uint a0, uint b0, uint c0, uint d0, uint e0, List<uint> imessage)
+        {
+            //blok od 512 bita // prebaciti neke stvari u funkcijuda rekurzija može raditi
+            List<uint> mblock = new List<uint>();
+            mblock.AddRange(imessage.GetRange(0, 16));
+            imessage.RemoveRange(0, 16);
+            //Proširiti blok sa 16 na 80
+            for (int i = 16; i < 80; ++i)
+            {
+                mblock.Add((mblock[i - 3] ^ mblock[i - 8] ^ mblock[i - 14] ^ mblock[i - 16]) << 1);
+            }
+
+            //Glavna funkcija
+            uint A = a0;
+            uint B = b0;
+            uint C = c0;
+            uint D = d0;
+            uint E = e0;
+            uint F = 0;
+            uint k = 0;
+            for (int i = 0; i < 80; ++i)
+            {
+                if (i >= 0 && i <= 19)
+                {
+                    F = (B & C) | ((~B) & D);
+                    k = 0x5A827999;
+                }
+                else if (i >= 20 && i <= 39)
+                {
+                    F = B ^ C ^ D;
+                    k = 0x6ED9EBA1;
+                }
+                else if (i >= 40 && i <= 59)
+                {
+                    F = (B & C) | (B & D) | (C & D);
+                    k = 0x8F1BBCDC;
+                }
+                else if (i >= 60 && i <= 79)
+                {
+                    F = B ^ C ^ D;
+                    k = 0xCA62C1D6;
+                }
+
+                uint temp = (A << 5) + F + E + k + mblock[i];
+                E = D;
+                D = C;
+                C = B << 30;
+                B = A;
+                A = temp;
+            }
+
+            a0 += A;
+            b0 += B;
+            c0 += C;
+            d0 += D;
+            e0 += E;
+
+            if (imessage.Count == 0)
+            {
+                List<byte> digest = new List<byte>();
+                digest.AddRange(BitConverter.GetBytes(a0));
+                digest.AddRange(BitConverter.GetBytes(b0));
+                digest.AddRange(BitConverter.GetBytes(c0));
+                digest.AddRange(BitConverter.GetBytes(d0));
+                digest.AddRange(BitConverter.GetBytes(e0));
+                string fdigest = ConvertByteArrayToString(digest.ToArray());
+                return fdigest;//promijeniti direktno return nakon debugiranja            
+            }
+            //Vraća hash
+            return RoundsSHA256(a0, b0, c0, d0, e0, imessage);
+            // Console.WriteLine(hash.ToString());
+        }
+
+        //Vraća listu primarnih brojeva
+        private List<int> PrimeNumbers(int a)
+        {
+            List<int> prime = new List<int>();
+            //int[] tprimes = { 1, 2, 3 };
+            //prime.AddRange(tprimes);
+            for (int i = 2, number = 2;  prime.Count < a;)
+            {
+                if (number % i  == 0 && number > i)
+                {
+                    ++number;
+                    i = 2;
+                    continue;
+                }
+                else if (number % i == 0  && (i >= number / 3))
+                {
+                    prime.Add(number++);
+                    i = 2;
+                }
+                else
+                    ++i;
+            }
+            return prime;
         }
     }
 }
