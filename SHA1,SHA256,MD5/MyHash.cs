@@ -53,7 +53,7 @@ namespace SHA1_SHA256_MD5
         {           
             //Sprema duljinu originalne poruke u 64 bita
             List<byte> osize = new List<byte>(BitConverter.GetBytes((Int64)(modmessage.Count << 32)));
-            modmessage.Add(255);// appendamo 1, 8 bita
+            modmessage.Add(0x80);// appendamo 1, 8 bita
             int paddsize = 64 - ((modmessage.Count * 8 % 512)/8); //prostor za padding do 64 bytea         
             if (paddsize < 8) paddsize = paddsize % 8 + 64;//dodajemo mjesta tako da duljina je poruke %512 bita
             while (paddsize - 8 > 0) //ostavljamo mjesta za zadnja 64 bita/8 bytea i popunjavamo nule
@@ -155,9 +155,96 @@ namespace SHA1_SHA256_MD5
             }
             return uimessage;           
         }
-        private void MySHA1()
+        private string MySHA1(byte[] array)
         {
+            //inicijalizacija
+            List<byte> modmessage = new List<byte>();
+            modmessage.AddRange(array);
+            //Duljina poruke u bitovima 64 bita
+            long ml = array.Length * 8;
+            //appendanje paddinga
+            modmessage.Add(0x80);
+            long paddsize = ((ml - 64) % 512) / 8;
+            while (paddsize > 0) //ostavljamo mjesta za zadnja 64 bita/8 bytea i popunjavamo nule
+            {
+                modmessage.Add(0);
+                --paddsize;
+            }
 
+            //Konverzija u uint list
+            List<uint> imessage = new List<uint>();
+            imessage.AddRange(ConvertByteListToIntList(modmessage));
+            //blok od 512 bita // prebaciti neke stvari u funkcijuda rekurzija može raditi
+            List<uint> mblock = new List<uint>();
+            mblock.AddRange(imessage.GetRange(0, 16));
+            imessage.RemoveRange(0, 16);
+            //Proširiti blok sa 16 na 80
+            for (int i = 16; i < 80; ++i)
+            {
+                mblock.Add((mblock[i - 3] ^ mblock[i - 8] ^ mblock[i - 14] ^ mblock[i - 16]) << 1);
+            }
+            //inicijalizacija konstanti A, B, C, D
+            uint a0 = 0x67452301;
+            uint b0 = 0xefcdab89;
+            uint c0 = 0x98badcfe;
+            uint d0 = 0x10325476;
+            uint e0 = 0xc3d2e1f0;
+            //Glavna funkcija
+            uint A = a0;
+            uint B = b0;
+            uint C = c0;
+            uint D = d0;
+            uint E = e0;
+            uint F = 0;
+            uint k = 0;
+            for (int i = 0; i < 80; ++i)
+            {
+                if (i >= 0 && i <= 19)
+                {
+                    F = (B & C) | ((~B) & D);
+                    k = 0x5A827999;
+                }
+                else if (i >= 20 && i <= 39)
+                {
+                    F = B ^ C ^ D;
+                    k = 0x6ED9EBA1;
+                }
+                else if (i >= 40 && i <= 59)
+                {
+                    F = (B & C) | (B & D) | (C & D);
+                    k = 0x8F1BBCDC;
+                }
+                else if (i >= 60 && i <= 79)
+                {
+                    F = B ^ C ^ D;
+                    k = 0xCA62C1D6;
+                }
+
+                uint temp = (A << 5) + F + E + k + mblock[i];
+                E = D;
+                D = C;
+                C = B << 30;
+                B = A;
+                A = temp;
+            }
+
+            a0 += A;
+            b0 += B;
+            c0 += C;
+            d0 += D;
+            e0 += E;
+
+            if (imessage.Count == 0)
+            {
+                List<byte> digest = new List<byte>();
+                digest.AddRange(BitConverter.GetBytes((a0 << 128) | (b0 << 96) | (c0 << 64) | (d0 << 32) | e0));
+                string fdigest = ConvertByteArrayToString(digest.ToArray());
+                return fdigest;//promijeniti direktno return nakon debugiranja            
+            }
+            //Vraća hash
+            //return Rounds(a0, b0, c0, d0, K, s, imessage);
+            return null;
+            // Console.WriteLine(hash.ToString());
         }
 
         private void MySHA256()
