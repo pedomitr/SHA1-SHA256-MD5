@@ -69,14 +69,14 @@ namespace SHA1_SHA256_MD5
         private void SHA1me(byte[] array)
         {
             var hashSHA1me = new MyHash();
-            textBoxMD5me.Text = hashSHA1me.MySHA1(array);
+            textBoxSHA1me.Text = hashSHA1me.MySHA1(array);
             //hashMD5.Clear();
         }
 
         private void SHA256me(byte[] array)
         {
             var hashSHA256me = new MyHash();
-            textBoxMD5me.Text = hashSHA256me.MySHA256(array);
+            textBoxSHA256me.Text = hashSHA256me.MySHA256(array);
             //hashMD5.Clear();
         }
 
