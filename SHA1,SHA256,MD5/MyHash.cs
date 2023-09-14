@@ -19,7 +19,7 @@ namespace SHA1_SHA256_MD5
             List<byte> modmessage= new List<byte>();
             modmessage.AddRange(array);
             //appendanje paddinga
-            AppendPadd(modmessage);
+            AppendPaddMD5(modmessage);
             //Konverzija u uint list
             List<uint> imessage = new List<uint>();
             imessage.AddRange(ConvertByteListToIntList(modmessage));
@@ -44,12 +44,12 @@ namespace SHA1_SHA256_MD5
                 //mblock lista sadržava 16 članova koji predstavljaju Mi,
                 //ne zaboraviti refrešanje mblocka nakon rundi
             //Vraća hash
-            return Rounds(a0, b0, c0, d0, K, s, imessage);
+            return RoundsMD5(a0, b0, c0, d0, K, s, imessage);
            // Console.WriteLine(hash.ToString());
         }
 
         //dodaje padding i veličinu originalne poruke
-        private void AppendPadd(List<byte> modmessage)
+        private void AppendPaddMD5(List<byte> modmessage)
         {           
             //Sprema duljinu originalne poruke u 64 bita
             List<byte> osize = new List<byte>(BitConverter.GetBytes((Int64)(modmessage.Count << 32)));
@@ -65,7 +65,7 @@ namespace SHA1_SHA256_MD5
         }
 
         //Podijeliti poruku na blokove od 512 bita/ 64 bytea
-        private List<uint> ExtractBlock(List<uint> imessage)
+        private List<uint> ExtractBlockMD5(List<uint> imessage)
         {
             List<uint> block = new List<uint>();
             block.AddRange(imessage.GetRange(0, 16));
@@ -74,7 +74,7 @@ namespace SHA1_SHA256_MD5
         }
 
         //Obrađuje cijelu poruku i vraća hash u obiku stringa
-        private string Rounds(uint a0, uint b0, uint c0, uint d0, List<uint> K, uint[] s, List<uint> imessage)
+        private string RoundsMD5(uint a0, uint b0, uint c0, uint d0, List<uint> K, uint[] s, List<uint> imessage)
         {
             int i;
             uint F = 0;
@@ -84,7 +84,7 @@ namespace SHA1_SHA256_MD5
             uint C = c0;
             uint D = d0;
             List<uint> mblock = new List<uint>();
-            mblock.AddRange(ExtractBlock(imessage));
+            mblock.AddRange(ExtractBlockMD5(imessage));
             for (i = 0; i < 64; ++i)
             {
                 if( i >= 0 && i <= 15)
@@ -130,7 +130,7 @@ namespace SHA1_SHA256_MD5
                 string fdigest = ConvertByteArrayToString(digest.ToArray()); 
                return fdigest;//promijeniti direktno return nakon debugiranja            
             }
-            else return Rounds(a0, b0, c0, d0, K, s, imessage);
+            else return RoundsMD5(a0, b0, c0, d0, K, s, imessage);
         }
 
         byte[] ConvertStringToByteArray(string message)
@@ -174,6 +174,20 @@ namespace SHA1_SHA256_MD5
             //Konverzija u uint list
             List<uint> imessage = new List<uint>();
             imessage.AddRange(ConvertByteListToIntList(modmessage));
+
+            //inicijalizacija konstanti A, B, C, D
+            uint a0 = 0x67452301;
+            uint b0 = 0xefcdab89;
+            uint c0 = 0x98badcfe;
+            uint d0 = 0x10325476;
+            uint e0 = 0xc3d2e1f0;
+
+            //Vraća hash
+            return RoundsSHA1(a0, b0, c0, d0, e0, imessage);
+        }
+
+        private string RoundsSHA1(uint a0, uint b0, uint c0, uint d0, uint e0, List<uint> imessage)
+        {
             //blok od 512 bita // prebaciti neke stvari u funkcijuda rekurzija može raditi
             List<uint> mblock = new List<uint>();
             mblock.AddRange(imessage.GetRange(0, 16));
@@ -183,12 +197,7 @@ namespace SHA1_SHA256_MD5
             {
                 mblock.Add((mblock[i - 3] ^ mblock[i - 8] ^ mblock[i - 14] ^ mblock[i - 16]) << 1);
             }
-            //inicijalizacija konstanti A, B, C, D
-            uint a0 = 0x67452301;
-            uint b0 = 0xefcdab89;
-            uint c0 = 0x98badcfe;
-            uint d0 = 0x10325476;
-            uint e0 = 0xc3d2e1f0;
+
             //Glavna funkcija
             uint A = a0;
             uint B = b0;
@@ -242,8 +251,7 @@ namespace SHA1_SHA256_MD5
                 return fdigest;//promijeniti direktno return nakon debugiranja            
             }
             //Vraća hash
-            //return Rounds(a0, b0, c0, d0, K, s, imessage);
-            return null;
+            return RoundsSHA1(a0, b0, c0, d0, e0, imessage);
             // Console.WriteLine(hash.ToString());
         }
 
