@@ -23,7 +23,7 @@ namespace SHA1_SHA256_MD5
             AppendPaddMD5(modmessage);
             //Konverzija u uint list
             List<uint> imessage = new List<uint>();
-            imessage.AddRange(ConvertByteListToIntList(modmessage));
+            imessage.AddRange(ConvertByteListToUintList(modmessage));
             //blok od 512 bita
             //inicijalizacija konstanti A, B, C, D
             uint a0 = 0x67452301;
@@ -133,29 +133,7 @@ namespace SHA1_SHA256_MD5
             }
             else return RoundsMD5(a0, b0, c0, d0, K, s, imessage);
         }
-
-        byte[] ConvertStringToByteArray(string message)
-        {
-            return Encoding.UTF8.GetBytes(message);
-        }
-
-        string ConvertByteArrayToString(byte[] array)
-        {
-            return BitConverter.ToString(array).Replace("-", "").ToLower();
-        }
-
-        private List<uint> ConvertByteListToIntList(List<byte> modmessage)
-        {
-            List<uint> uimessage = new List<uint>();
-            List<byte> bmessage = new List<byte>();
-            bmessage.AddRange(modmessage);//kasnije direktno koristiti modmessage zasad kopiramo !!!
-            while ( bmessage.Count > 0)
-            {
-                uimessage.Add((uint)((((((bmessage[0] << 8) | bmessage[1]) << 8) | bmessage[2]) << 8) | bmessage[3]));
-                bmessage.RemoveRange(0, 4);
-            }
-            return uimessage;           
-        }
+      
         public string MySHA1(byte[] array)
         {
             //inicijalizacija
@@ -175,7 +153,7 @@ namespace SHA1_SHA256_MD5
 
             //Konverzija u uint list
             List<uint> imessage = new List<uint>();
-            imessage.AddRange(ConvertByteListToIntList(modmessage));
+            imessage.AddRange(ConvertByteListToUintList(modmessage));
 
             //inicijalizacija konstanti A, B, C, D, E
             uint a0 = 0x67452301;
@@ -197,7 +175,7 @@ namespace SHA1_SHA256_MD5
             //Proširiti blok sa 16 na 80
             for (int i = 16; i < 80; ++i)
             {
-                mblock.Add((mblock[i - 3] ^ mblock[i - 8] ^ mblock[i - 14] ^ mblock[i - 16]) << 1);
+                mblock.Add(RotateLeft((mblock[i - 3] ^ mblock[i - 8] ^ mblock[i - 14] ^ mblock[i - 16]), 1));
             }
 
             //Glavna funkcija
@@ -280,7 +258,7 @@ namespace SHA1_SHA256_MD5
 
             //Konverzija u uint list
             List<uint> imessage = new List<uint>();
-            imessage.AddRange(ConvertByteListToIntList(modmessage));
+            imessage.AddRange(ConvertByteListToUintList(modmessage));
 
             //inicijalizacija konstanti A, B, C, D, E, F, G, H
             uint a0 = 0x6a09e667;
@@ -410,6 +388,25 @@ namespace SHA1_SHA256_MD5
                     ++i;
             }
             return prime;
+        }
+
+
+        private List<uint> ConvertByteListToUintList(List<byte> modmessage)
+        {
+            List<uint> uimessage = new List<uint>();
+            List<byte> bmessage = new List<byte>();
+            bmessage.AddRange(modmessage);
+            while (bmessage.Count > 0)
+            {
+                uimessage.Add((uint)((((((bmessage[0] << 8) | bmessage[1]) << 8) | bmessage[2]) << 8) | bmessage[3]));
+                bmessage.RemoveRange(0, 4);
+            }
+            return uimessage;
+        }
+
+        string ConvertByteArrayToString(byte[] array)
+        {
+            return BitConverter.ToString(array).Replace("-", "").ToLower();
         }
     }
 }
