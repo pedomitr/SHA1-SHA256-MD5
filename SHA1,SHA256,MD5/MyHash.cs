@@ -295,13 +295,10 @@ namespace SHA1_SHA256_MD5
             List<uint> K = new List<uint>();
             List<int> prime = PrimeNumbers(64);
             //Uzimamo prva 32 bita frakcijskog djela 3. korijenna primarnih brojeva (2 do 311)
-            List<double> dd = new List<double>();
             foreach(int i in prime)
             {
-                //TO BE CONTINUED
-                double a = Math.Pow(i, (1 / 3));
-                //K.Add((uint)Math.Floor(Math.Pow(i, 1/3)));
-                dd.Add((Math.Pow(i, 1 / 3)));
+                double a = Math.Pow(i, (1/3.0));
+                K.Add((uint)(Math.Truncate((a - Math.Truncate(a)) * Math.Pow(10, 8))));
             }
             //Vraća hash
             return RoundsSHA256(a0, b0, c0, d0, e0, imessage);
