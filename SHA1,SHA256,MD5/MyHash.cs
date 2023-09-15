@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Numerics;
 
 namespace SHA1_SHA256_MD5
 {
@@ -301,19 +302,22 @@ namespace SHA1_SHA256_MD5
                 K.Add((uint)(Math.Truncate((a - Math.Truncate(a)) * Math.Pow(10, 8))));
             }
             //Vraća hash
-            return RoundsSHA256(a0, b0, c0, d0, e0, imessage);
+            return RoundsSHA256(a0, b0, c0, d0, e0, f0, g0, h0, K, imessage);
         }
 
-        private string RoundsSHA256(uint a0, uint b0, uint c0, uint d0, uint e0, List<uint> imessage)
+        private string RoundsSHA256(uint a0, uint b0, uint c0, uint d0, uint e0, uint f0, uint g0, uint h0, List<uint> K, List<uint> imessage)
         {
             //blok od 512 bita // prebaciti neke stvari u funkcijuda rekurzija može raditi
             List<uint> mblock = new List<uint>();
             mblock.AddRange(imessage.GetRange(0, 16));
             imessage.RemoveRange(0, 16);
+            //Dodajemo 64 riječi w od 32 bita, početna vrijednost nebitna slobodno 0
             //Proširiti blok sa 16 na 80
-            for (int i = 16; i < 80; ++i)
+            for (int i = 16; i < 64; ++i)
             {
-                mblock.Add((mblock[i - 3] ^ mblock[i - 8] ^ mblock[i - 14] ^ mblock[i - 16]) << 1);
+                uint s0 = (RotateRight(mblock[i - 15], 7)) ^ (RotateRight(mblock[i - 15], 18)) ^ (mblock[i - 15] >> 3);
+                uint s1 = RotateRight(mblock[i - 2], 17) ^ RotateRight(mblock[i - 2], 19) ^ (mblock[i - 2] >> 10);
+                mblock.Add(mblock[i - 16] + s0 + mblock[i - 7] + s1);
             }
 
             //Glavna funkcija
@@ -322,37 +326,27 @@ namespace SHA1_SHA256_MD5
             uint C = c0;
             uint D = d0;
             uint E = e0;
-            uint F = 0;
-            uint k = 0;
-            for (int i = 0; i < 80; ++i)
-            {
-                if (i >= 0 && i <= 19)
-                {
-                    F = (B & C) | ((~B) & D);
-                    k = 0x5A827999;
-                }
-                else if (i >= 20 && i <= 39)
-                {
-                    F = B ^ C ^ D;
-                    k = 0x6ED9EBA1;
-                }
-                else if (i >= 40 && i <= 59)
-                {
-                    F = (B & C) | (B & D) | (C & D);
-                    k = 0x8F1BBCDC;
-                }
-                else if (i >= 60 && i <= 79)
-                {
-                    F = B ^ C ^ D;
-                    k = 0xCA62C1D6;
-                }
+            uint F = f0;
+            uint G = g0;
+            uint H = h0;
 
-                uint temp = (A << 5) + F + E + k + mblock[i];
-                E = D;
+            for (int i = 0; i < 64; ++i)
+            {
+                uint s1 = RotateRight(E, 6) ^ RotateRight(E, 11) ^ RotateRight(E, 25);
+                uint Ch = (E & F) ^ ((~E) & G);
+                uint temp0 = H + s1 + Ch + K[i] + mblock[i];
+                uint s0 = RotateRight(A, 2) ^ RotateRight(A, 13) ^ RotateRight(A, 22);
+                uint Ma = (A & B) ^ (A & C) ^ (B & C);
+                uint temp1 = s0 + Ma;
+
+                H = G;
+                G = F;
+                F = E;
+                E = D + temp0;
                 D = C;
-                C = B << 30;
+                C = B;
                 B = A;
-                A = temp;
+                A = temp0 + temp1;
             }
 
             a0 += A;
@@ -360,6 +354,9 @@ namespace SHA1_SHA256_MD5
             c0 += C;
             d0 += D;
             e0 += E;
+            f0 += F;
+            g0 += G;
+            h0 += H;
 
             if (imessage.Count == 0)
             {
@@ -369,12 +366,25 @@ namespace SHA1_SHA256_MD5
                 digest.AddRange(BitConverter.GetBytes(c0));
                 digest.AddRange(BitConverter.GetBytes(d0));
                 digest.AddRange(BitConverter.GetBytes(e0));
+                digest.AddRange(BitConverter.GetBytes(f0));
+                digest.AddRange(BitConverter.GetBytes(g0));
+                digest.AddRange(BitConverter.GetBytes(h0));
                 string fdigest = ConvertByteArrayToString(digest.ToArray());
                 return fdigest;//promijeniti direktno return nakon debugiranja            
             }
             //Vraća hash
-            return RoundsSHA256(a0, b0, c0, d0, e0, imessage);
+            return RoundsSHA256(a0, b0, c0, d0, e0, f0, g0, h0, K, imessage);
             // Console.WriteLine(hash.ToString());
+        }
+
+        public static uint RotateLeft(uint value, int count)
+        {
+            return ((value << count) | (value >> (32 - count)));
+        }
+
+        public static uint RotateRight(uint value, int count)
+        {
+            return ((value >> count) | (value << (32 - count)));
         }
 
         //Vraća listu primarnih brojeva
