@@ -143,7 +143,7 @@ namespace SHA1_SHA256_MD5
             long ml = array.Length * 8;
             //appendanje paddinga
             modmessage.Add(0x80);
-            long paddsize = Math.Abs(((ml + 1) % 512) - 448) / 8;// 
+            long paddsize = Math.Abs(((ml + 1) % 512) - 448) / 8;
             while (paddsize > 0) //ostavljamo mjesta za zadnja 64 bita/8 bytea i popunjavamo nule
             {
                 modmessage.Add(0x00);
@@ -168,14 +168,14 @@ namespace SHA1_SHA256_MD5
 
         private string RoundsSHA1(uint a0, uint b0, uint c0, uint d0, uint e0, List<uint> imessage)
         {
-            //blok od 512 bita // prebaciti neke stvari u funkcijuda rekurzija može raditi
+            //blok od 512 bita
             List<uint> mblock = new List<uint>();
             mblock.AddRange(imessage.GetRange(0, 16));
             imessage.RemoveRange(0, 16);
             //Proširiti blok sa 16 na 80
             for (int i = 16; i < 80; ++i)
             {
-                mblock.Add(RotateLeft((mblock[i - 3] ^ mblock[i - 8] ^ mblock[i - 14] ^ mblock[i - 16]), 1));
+                mblock.Add(RotateLeft(mblock[i - 3] ^ mblock[i - 8] ^ mblock[i - 14] ^ mblock[i - 16], 1));
             }
 
             //Glavna funkcija
