@@ -37,7 +37,7 @@ namespace SHA1_SHA256_MD5
                 K.Add((uint)Math.Floor(232 * Math.Abs(Math.Sin(i + 1))));
             }
             //Lista pomaka po rundi
-            uint[] s = { 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22,        //runde 1-16
+            int[] s = { 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22,        //runde 1-16
                           5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,    //runde 17-32
                           4, 11, 16, 23,  4, 11, 16, 23,  4, 11, 16, 23,  4, 11, 16, 23,    //runde 33 48
                           6, 10, 15, 21,  6, 10, 15, 21,  6, 10, 15, 21,  6, 10, 15, 21 };  //runde 49-64
@@ -75,7 +75,7 @@ namespace SHA1_SHA256_MD5
         }
 
         //Obrađuje cijelu poruku i vraća hash u obiku stringa
-        private string RoundsMD5(uint a0, uint b0, uint c0, uint d0, List<uint> K, uint[] s, List<uint> imessage)
+        private string RoundsMD5(uint a0, uint b0, uint c0, uint d0, List<uint> K, int[] s, List<uint> imessage)
         {
             int i;
             uint F = 0;
@@ -113,7 +113,7 @@ namespace SHA1_SHA256_MD5
                 A = D;
                 D = C;
                 C = B;
-                B = (uint)(B + ((int)F << (int)s[i]));
+                B += RotateLeft(F, s[i]);
             }
 
             a0 += A;
@@ -231,10 +231,10 @@ namespace SHA1_SHA256_MD5
                     k = 0xCA62C1D6;
                 }
 
-                uint temp = (A << 5) + F + E + k + mblock[i];
+                uint temp = RotateLeft(A, 5) + F + E + k + mblock[i];
                 E = D;
                 D = C;
-                C = B << 30;
+                C = RotateLeft(B, 30);
                 B = A;
                 A = temp;
             }
