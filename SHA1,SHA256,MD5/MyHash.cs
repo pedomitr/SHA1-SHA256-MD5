@@ -357,20 +357,18 @@ namespace SHA1_SHA256_MD5
 
         public static uint RotateLeft(uint value, int count)
         {
-            return ((value << count) | (value >> (32 - count)));
+            return (value << count) | (value >> (32 - count));
         }
 
         public static uint RotateRight(uint value, int count)
         {
-            return ((value >> count) | (value << (32 - count)));
+            return (value >> count) | (value << (32 - count));
         }
 
         //Vraća listu primarnih brojeva
         private List<int> PrimeNumbers(int a)
         {
             List<int> prime = new List<int>();
-            //int[] tprimes = { 1, 2, 3 };
-            //prime.AddRange(tprimes);
             for (int i = 2, number = 2;  prime.Count < a;)
             {
                 if (number % i  == 0 && number > i)
