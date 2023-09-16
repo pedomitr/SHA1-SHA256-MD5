@@ -339,7 +339,7 @@ namespace SHA1_SHA256_MD5
                 modmessage.Add(0x00);
                 --paddsize;
             }
-            modmessage.AddRange(BitConverter.GetBytes(ml));
+            modmessage.AddRange(SwitchToBE(BitConverter.GetBytes(ml)));//TEST SwitchToBE radi za SHA1 sve veličine
         }
 
         //Podijeliti poruku na blokove od 512 bita/ 64 bytea
