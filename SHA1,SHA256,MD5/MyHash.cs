@@ -34,16 +34,14 @@ namespace SHA1_SHA256_MD5
             List<uint> K = new List<uint>();
             for(int i = 0; i < 64; ++i)
             {
-                K.Add((uint)Math.Floor(232 * Math.Abs(Math.Sin(i + 1))));
+                K.Add((uint)Math.Floor(Math.Pow(2, 32) * Math.Abs(Math.Sin(i + 1))));
             }
             //Lista pomaka po rundi
-            int[] s = { 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22,        //runde 1-16
-                          5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,    //runde 17-32
-                          4, 11, 16, 23,  4, 11, 16, 23,  4, 11, 16, 23,  4, 11, 16, 23,    //runde 33 48
-                          6, 10, 15, 21,  6, 10, 15, 21,  6, 10, 15, 21,  6, 10, 15, 21 };  //runde 49-64
-            //Podijeliti poruku u 32 bitne riječi Mi
-                //mblock lista sadržava 16 članova koji predstavljaju Mi,
-                //ne zaboraviti refrešanje mblocka nakon rundi
+            int[] s = { 7, 12, 17, 22,  7, 12, 17, 22,  7, 12, 17, 22,  7, 12, 17, 22,  //runde 1-16
+                        5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,  //runde 17-32
+                        4, 11, 16, 23,  4, 11, 16, 23,  4, 11, 16, 23,  4, 11, 16, 23,  //runde 33 48
+                        6, 10, 15, 21,  6, 10, 15, 21,  6, 10, 15, 21,  6, 10, 15, 21 };//runde 49-64
+
             //Vraća hash
             return RoundsMD5(a0, b0, c0, d0, K, s, imessage);
            // Console.WriteLine(hash.ToString());
@@ -85,6 +83,7 @@ namespace SHA1_SHA256_MD5
             uint C = c0;
             uint D = d0;
             List<uint> mblock = new List<uint>();
+            //Podijeliti poruku u 32 bitne riječi Mi
             mblock.AddRange(ExtractBlockMD5(imessage));
             for (i = 0; i < 64; ++i)
             {
@@ -188,7 +187,7 @@ namespace SHA1_SHA256_MD5
             uint k = 0;
             for (int i = 0; i < 80; ++i)
             {
-                if (i >= 0 && i <= 19)
+                if (i >= 0 && i <= 19)//moguća optimizacija, zamijeniti pozicije uvjeta
                 {
                     F = (B & C) | ((~B) & D);
                     k = 0x5A827999;
