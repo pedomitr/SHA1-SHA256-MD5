@@ -95,10 +95,20 @@ namespace SHA1_SHA256_MD5
             if (imessage.Count == 0)
             {
                 List<byte> digest = new List<byte>();
-                digest.AddRange(BitConverter.GetBytes(a0));
-                digest.AddRange(BitConverter.GetBytes(b0));
-                digest.AddRange(BitConverter.GetBytes(c0));
-                digest.AddRange(BitConverter.GetBytes(d0));
+                if (BitConverter.IsLittleEndian)
+                {
+                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(a0)));
+                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(b0)));
+                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(c0)));
+                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(d0)));
+                }
+                else
+                {
+                    digest.AddRange(BitConverter.GetBytes(a0));
+                    digest.AddRange(BitConverter.GetBytes(b0));
+                    digest.AddRange(BitConverter.GetBytes(c0));
+                    digest.AddRange(BitConverter.GetBytes(d0));
+                }
                 string fdigest = ConvertByteArrayToString(digest.ToArray()); 
                return fdigest;//promijeniti direktno return nakon debugiranja            
             }
@@ -179,13 +189,24 @@ namespace SHA1_SHA256_MD5
             e0 += E;
 
             if (imessage.Count == 0)
-            {
+            {               
                 List<byte> digest = new List<byte>();
-                digest.AddRange(BitConverter.GetBytes(a0));
-                digest.AddRange(BitConverter.GetBytes(b0));
-                digest.AddRange(BitConverter.GetBytes(c0));
-                digest.AddRange(BitConverter.GetBytes(d0));
-                digest.AddRange(BitConverter.GetBytes(e0));
+                if (BitConverter.IsLittleEndian)
+                {
+                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(a0)));
+                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(b0)));
+                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(c0)));
+                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(d0)));
+                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(e0)));
+                }
+                else
+                {
+                    digest.AddRange(BitConverter.GetBytes(a0));
+                    digest.AddRange(BitConverter.GetBytes(b0));
+                    digest.AddRange(BitConverter.GetBytes(c0));
+                    digest.AddRange(BitConverter.GetBytes(d0));
+                    digest.AddRange(BitConverter.GetBytes(e0));
+                }
                 string fdigest = ConvertByteArrayToString(digest.ToArray());
                 return fdigest;//promijeniti direktno return nakon debugiranja            
             }
@@ -276,23 +297,36 @@ namespace SHA1_SHA256_MD5
             if (imessage.Count == 0)
             {
                 List<byte> digest = new List<byte>();
-                digest.AddRange(BitConverter.GetBytes(a0));
-                digest.AddRange(BitConverter.GetBytes(b0));
-                digest.AddRange(BitConverter.GetBytes(c0));
-                digest.AddRange(BitConverter.GetBytes(d0));
-                digest.AddRange(BitConverter.GetBytes(e0));
-                digest.AddRange(BitConverter.GetBytes(f0));
-                digest.AddRange(BitConverter.GetBytes(g0));
-                digest.AddRange(BitConverter.GetBytes(h0));
-                string fdigest = ConvertByteArrayToString(digest.ToArray());
+                if (BitConverter.IsLittleEndian)
+                {
+                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(a0)));
+                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(b0)));
+                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(c0)));
+                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(d0)));
+                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(e0)));
+                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(f0)));
+                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(g0)));
+                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(h0)));
+                }
+                else
+                {
+                    digest.AddRange(BitConverter.GetBytes(a0));
+                    digest.AddRange(BitConverter.GetBytes(b0));
+                    digest.AddRange(BitConverter.GetBytes(c0));
+                    digest.AddRange(BitConverter.GetBytes(d0));
+                    digest.AddRange(BitConverter.GetBytes(e0));
+                    digest.AddRange(BitConverter.GetBytes(f0));
+                    digest.AddRange(BitConverter.GetBytes(g0));
+                    digest.AddRange(BitConverter.GetBytes(h0));
+                }
+                    string fdigest = ConvertByteArrayToString(digest.ToArray());
                 return fdigest;//promijeniti direktno return nakon debugiranja            
             }
             //Vraća hash
             return RoundsSHA256(a0, b0, c0, d0, e0, f0, g0, h0, K, imessage);
-            // Console.WriteLine(hash.ToString());
         }
 
-        //dodaje padding i veličinu originalne poruke
+        //Dodaje padding i veličinu originalne poruke
         private void AppendPadd(List<byte> modmessage)
         {
             //Duljina poruke u bitovima 64 bita
@@ -362,6 +396,19 @@ namespace SHA1_SHA256_MD5
                 bmessage.RemoveRange(0, 4);
             }
             return uimessage;
+        }
+
+        //Uzima BitConverter array koji je LE i pretvara ga u BE
+        private byte[] SwitchToBE(byte[] le)
+        {
+            int i = le.Length;
+            byte[] be = new byte[i];
+            foreach(byte b in le)
+            {
+                be[(i--) - 1] = b;
+                if (i == 0) break;
+            }
+            return be;
         }
 
         string ConvertByteArrayToString(byte[] array)
