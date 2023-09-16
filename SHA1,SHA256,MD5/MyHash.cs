@@ -41,20 +41,14 @@ namespace SHA1_SHA256_MD5
 
             //Vraća hash
             return RoundsMD5(a0, b0, c0, d0, K, s, imessage);
-        }      
-
-        //Podijeliti poruku na blokove od 512 bita/ 64 bytea
-        private List<uint> ExtractBlockMD5(List<uint> imessage)
-        {
-            List<uint> block = new List<uint>();
-            block.AddRange(imessage.GetRange(0, 16));
-            imessage.RemoveRange(0, 16);
-            return block;
-        }
+        }            
 
         //Obrađuje cijelu poruku i vraća hash u obiku stringa
         private string RoundsMD5(uint a0, uint b0, uint c0, uint d0, List<uint> K, int[] s, List<uint> imessage)
         {
+            //Blok od 512 bita reprezentira 32 bitne riječi Mi
+            List<uint> mblock = new List<uint>(ExtractBlock(imessage));
+            //Glavna funkcija
             int i;
             uint F = 0;
             int j = 0;
@@ -62,9 +56,7 @@ namespace SHA1_SHA256_MD5
             uint B = b0;
             uint C = c0;
             uint D = d0;
-            List<uint> mblock = new List<uint>();
-            //Podijeliti poruku u 32 bitne riječi Mi
-            mblock.AddRange(ExtractBlockMD5(imessage));
+
             for (i = 0; i < 64; ++i)
             {
                 if( i >= 0 && i <= 15)
@@ -133,16 +125,13 @@ namespace SHA1_SHA256_MD5
 
         private string RoundsSHA1(uint a0, uint b0, uint c0, uint d0, uint e0, List<uint> imessage)
         {
-            //blok od 512 bita
-            List<uint> mblock = new List<uint>();
-            mblock.AddRange(imessage.GetRange(0, 16));
-            imessage.RemoveRange(0, 16);
-            //Proširiti blok sa 16 na 80
+            //Blok od 512 bita
+            List<uint> mblock = new List<uint>(ExtractBlock(imessage));
+            //Proširiti blok sa 16 riječi na 80
             for (int i = 16; i < 80; ++i)
             {
                 mblock.Add(RotateLeft(mblock[i - 3] ^ mblock[i - 8] ^ mblock[i - 14] ^ mblock[i - 16], 1));
             }
-
             //Glavna funkcija
             uint A = a0;
             uint B = b0;
@@ -151,6 +140,7 @@ namespace SHA1_SHA256_MD5
             uint E = e0;
             uint F = 0;
             uint k = 0;
+
             for (int i = 0; i < 80; ++i)
             {
                 if (i >= 0 && i <= 19)//moguća optimizacija, zamijeniti pozicije uvjeta
@@ -201,7 +191,6 @@ namespace SHA1_SHA256_MD5
             }
             //Vraća hash
             return RoundsSHA1(a0, b0, c0, d0, e0, imessage);
-            // Console.WriteLine(hash.ToString());
         }
 
         public string MySHA256(byte[] array)
@@ -236,10 +225,8 @@ namespace SHA1_SHA256_MD5
 
         private string RoundsSHA256(uint a0, uint b0, uint c0, uint d0, uint e0, uint f0, uint g0, uint h0, List<uint> K, List<uint> imessage)
         {
-            //blok od 512 bita // prebaciti neke stvari u funkcijuda rekurzija može raditi
-            List<uint> mblock = new List<uint>();
-            mblock.AddRange(imessage.GetRange(0, 16));
-            imessage.RemoveRange(0, 16);
+            //Blok od 512 bita
+            List<uint> mblock = new List<uint>(ExtractBlock(imessage));
             //Dodajemo 64 riječi w od 32 bita, početna vrijednost nebitna slobodno 0
             //Proširiti blok sa 16 na 80
             for (int i = 16; i < 64; ++i)
@@ -248,7 +235,6 @@ namespace SHA1_SHA256_MD5
                 uint s1 = RotateRight(mblock[i - 2], 17) ^ RotateRight(mblock[i - 2], 19) ^ (mblock[i - 2] >> 10);
                 mblock.Add(mblock[i - 16] + s0 + mblock[i - 7] + s1);
             }
-
             //Glavna funkcija
             uint A = a0;
             uint B = b0;
@@ -320,6 +306,15 @@ namespace SHA1_SHA256_MD5
                 --paddsize;
             }
             modmessage.AddRange(BitConverter.GetBytes(ml));
+        }
+
+        //Podijeliti poruku na blokove od 512 bita/ 64 bytea
+        private List<uint> ExtractBlock(List<uint> imessage)
+        {
+            List<uint> block = new List<uint>();
+            block.AddRange(imessage.GetRange(0, 16));
+            imessage.RemoveRange(0, 16);
+            return block;
         }
 
         public static uint RotateLeft(uint value, int count)
