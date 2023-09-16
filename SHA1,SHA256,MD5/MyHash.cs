@@ -339,6 +339,7 @@ namespace SHA1_SHA256_MD5
                 modmessage.Add(0x00);
                 --paddsize;
             }
+            /*if(BitConverter.IsLittleEndian);*///Dodati sa if elsom reda radi, else bez SwitchToBE
             modmessage.AddRange(SwitchToBE(BitConverter.GetBytes(ml)));//TEST SwitchToBE radi za SHA1 sve veličine
         }
 
