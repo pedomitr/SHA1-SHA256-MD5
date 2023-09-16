@@ -67,12 +67,12 @@ namespace SHA1_SHA256_MD5
                 else if (i >= 16 && i <= 31)
                 {
                     F = (B & D) | (C & (~D));
-                    j = (((5 * i) + 1) % 16);
+                    j = ((5 * i) + 1) % 16;
                 }
                 else if (i >= 32 && i <= 47)
                 {
                     F = B ^ C ^ D;
-                    j = (((3 * i) + 5) % 16);
+                    j = ((3 * i) + 5) % 16;
                 }
                 else if (i >= 48 && i <= 63)
                 {
@@ -95,20 +95,10 @@ namespace SHA1_SHA256_MD5
             if (imessage.Count == 0)
             {
                 List<byte> digest = new List<byte>();
-                /*if (BitConverter.IsLittleEndian)
-                {
-                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(a0)));
-                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(b0)));
-                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(c0)));
-                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(d0)));
-                }
-                else*/
-                {
-                    digest.AddRange(BitConverter.GetBytes(a0));
-                    digest.AddRange(BitConverter.GetBytes(b0));
-                    digest.AddRange(BitConverter.GetBytes(c0));
-                    digest.AddRange(BitConverter.GetBytes(d0));
-                }
+                digest.AddRange(BitConverter.GetBytes(a0));
+                digest.AddRange(BitConverter.GetBytes(b0));
+                digest.AddRange(BitConverter.GetBytes(c0));
+                digest.AddRange(BitConverter.GetBytes(d0));
                 string fdigest = ConvertByteArrayToString(digest.ToArray()); 
                return fdigest;//promijeniti direktno return nakon debugiranja            
             }
