@@ -19,7 +19,7 @@ namespace SHA1_SHA256_MD5
             //Inicijalizacija
             List<byte> modmessage = new List<byte>(array);
             List<uint> imessage = new List<uint>(); ;
-            AppendPadd(modmessage);
+            AppendPadd(modmessage, true);//LE true
             //Dijelimo u riječi 32 bita
             imessage.AddRange(ConvertByteListToUintList(modmessage));          
             //Inicijalizacija konstanti A, B, C, D
@@ -95,14 +95,14 @@ namespace SHA1_SHA256_MD5
             if (imessage.Count == 0)
             {
                 List<byte> digest = new List<byte>();
-                if (BitConverter.IsLittleEndian)
+                /*if (BitConverter.IsLittleEndian)
                 {
                     digest.AddRange(SwitchToBE(BitConverter.GetBytes(a0)));
                     digest.AddRange(SwitchToBE(BitConverter.GetBytes(b0)));
                     digest.AddRange(SwitchToBE(BitConverter.GetBytes(c0)));
                     digest.AddRange(SwitchToBE(BitConverter.GetBytes(d0)));
                 }
-                else
+                else*/
                 {
                     digest.AddRange(BitConverter.GetBytes(a0));
                     digest.AddRange(BitConverter.GetBytes(b0));
@@ -120,7 +120,7 @@ namespace SHA1_SHA256_MD5
             //Inicijalizacija
             List<byte> modmessage = new List<byte>(array);
             List<uint> imessage = new List<uint>();;
-            AppendPadd(modmessage);
+            AppendPadd(modmessage, false);//false BE
             //Dijelimo u riječi 32 bita
             imessage.AddRange(ConvertByteListToUintList(modmessage));
             //Inicijalizacija konstanti A, B, C, D, E
@@ -219,7 +219,7 @@ namespace SHA1_SHA256_MD5
             //Inicijalizacija
             List<byte> modmessage = new List<byte>(array);
             List<uint> imessage = new List<uint>(); ;
-            AppendPadd(modmessage);
+            AppendPadd(modmessage, false);//false BE
             //Dijelimo u riječi 32 bita
             imessage.AddRange(ConvertByteListToUintList(modmessage));  
             //Inicijalizacija konstanti A, B, C, D, E, F, G, H
@@ -327,7 +327,7 @@ namespace SHA1_SHA256_MD5
         }
 
         //Dodaje padding i veličinu originalne poruke
-        private void AppendPadd(List<byte> modmessage)
+        private void AppendPadd(List<byte> modmessage, bool le)
         {
             //Duljina poruke u bitovima 64 bita
             long ml = modmessage.Count() * 8;
@@ -339,8 +339,10 @@ namespace SHA1_SHA256_MD5
                 modmessage.Add(0x00);
                 --paddsize;
             }
-            /*if(BitConverter.IsLittleEndian);*///Dodati sa if elsom reda radi, else bez SwitchToBE
-            modmessage.AddRange(SwitchToBE(BitConverter.GetBytes(ml)));//TEST SwitchToBE radi za SHA1 sve veličine
+            if(BitConverter.IsLittleEndian && le)
+                modmessage.AddRange(BitConverter.GetBytes(ml));
+            else 
+                modmessage.AddRange(SwitchToBE(BitConverter.GetBytes(ml)));
         }
 
         //Podijeliti poruku na blokove od 512 bita/ 64 bytea
