@@ -16,16 +16,13 @@ namespace SHA1_SHA256_MD5
     {
         public string MyMD5(byte[] array)
         {
-            //inicijalizacija
-            List<byte> modmessage= new List<byte>();
-            modmessage.AddRange(array);
-            //appendanje paddinga
-            AppendPaddMD5(modmessage);
-            //Konverzija u uint list
-            List<uint> imessage = new List<uint>();
-            imessage.AddRange(ConvertByteListToUintList(modmessage));
-            //blok od 512 bita
-            //inicijalizacija konstanti A, B, C, D
+            //Inicijalizacija
+            List<byte> modmessage = new List<byte>(array);
+            List<uint> imessage = new List<uint>(); ;
+            AppendPadd(modmessage);
+            //Dijelimo u riječi 32 bita
+            imessage.AddRange(ConvertByteListToUintList(modmessage));          
+            //Inicijalizacija konstanti A, B, C, D
             uint a0 = 0x67452301;
             uint b0 = 0xefcdab89;
             uint c0 = 0x98badcfe;
@@ -44,24 +41,7 @@ namespace SHA1_SHA256_MD5
 
             //Vraća hash
             return RoundsMD5(a0, b0, c0, d0, K, s, imessage);
-           // Console.WriteLine(hash.ToString());
-        }
-
-        //dodaje padding i veličinu originalne poruke
-        private void AppendPaddMD5(List<byte> modmessage)
-        {           
-            //Sprema duljinu originalne poruke u 64 bita
-            List<byte> osize = new List<byte>(BitConverter.GetBytes((Int64)((modmessage.Count * 8) << 32)));
-            modmessage.Add(0x80);// appendamo 1, 8 bita
-            int paddsize = 64 - ((modmessage.Count * 8 % 512)/8); //prostor za padding do 64 bytea         
-            if (paddsize < 8) paddsize = paddsize % 8 + 64;//dodajemo mjesta tako da duljina je poruke %512 bita
-            while (paddsize - 8 > 0) //ostavljamo mjesta za zadnja 64 bita/8 bytea i popunjavamo nule
-            {
-                modmessage.Add(0);
-                --paddsize;
-            }                    
-            modmessage.AddRange(osize);//dodajemo veličinu originalne poruke,  64 bita
-        }
+        }      
 
         //Podijeliti poruku na blokove od 512 bita/ 64 bytea
         private List<uint> ExtractBlockMD5(List<uint> imessage)
@@ -135,32 +115,18 @@ namespace SHA1_SHA256_MD5
       
         public string MySHA1(byte[] array)
         {
-            //inicijalizacija
-            List<byte> modmessage = new List<byte>();
-            modmessage.AddRange(array);
-            //Duljina poruke u bitovima 64 bita
-            long ml = array.Length * 8;
-            //appendanje paddinga
-            modmessage.Add(0x80);
-            long paddsize = Math.Abs(((ml + 1) % 512) - 448) / 8;
-            while (paddsize > 0) //ostavljamo mjesta za zadnja 64 bita/8 bytea i popunjavamo nule
-            {
-                modmessage.Add(0x00);
-                --paddsize;
-            }
-            modmessage.AddRange(BitConverter.GetBytes(ml));
-
-            //Konverzija u uint list
-            List<uint> imessage = new List<uint>();
+            //Inicijalizacija
+            List<byte> modmessage = new List<byte>(array);
+            List<uint> imessage = new List<uint>();;
+            AppendPadd(modmessage);
+            //Dijelimo u riječi 32 bita
             imessage.AddRange(ConvertByteListToUintList(modmessage));
-
-            //inicijalizacija konstanti A, B, C, D, E
+            //Inicijalizacija konstanti A, B, C, D, E
             uint a0 = 0x67452301;
             uint b0 = 0xefcdab89;
             uint c0 = 0x98badcfe;
             uint d0 = 0x10325476;
             uint e0 = 0xc3d2e1f0;
-
             //Vraća hash
             return RoundsSHA1(a0, b0, c0, d0, e0, imessage);
         }
@@ -240,26 +206,13 @@ namespace SHA1_SHA256_MD5
 
         public string MySHA256(byte[] array)
         {
-            //inicijalizacija
-            List<byte> modmessage = new List<byte>();
-            modmessage.AddRange(array);
-            //Duljina poruke u bitovima 64 bita
-            long ml = array.Length * 8;
-            //appendanje paddinga
-            modmessage.Add(0x80);
-            long paddsize = Math.Abs(((ml + 1) % 512) - 448) / 8;// 
-            while (paddsize > 0) //ostavljamo mjesta za zadnja 64 bita/8 bytea i popunjavamo nule
-            {
-                modmessage.Add(0x00);
-                --paddsize;
-            }
-            modmessage.AddRange(BitConverter.GetBytes(ml));
-
-            //Konverzija u uint list
-            List<uint> imessage = new List<uint>();
-            imessage.AddRange(ConvertByteListToUintList(modmessage));
-
-            //inicijalizacija konstanti A, B, C, D, E, F, G, H
+            //Inicijalizacija
+            List<byte> modmessage = new List<byte>(array);
+            List<uint> imessage = new List<uint>(); ;
+            AppendPadd(modmessage);
+            //Dijelimo u riječi 32 bita
+            imessage.AddRange(ConvertByteListToUintList(modmessage));  
+            //Inicijalizacija konstanti A, B, C, D, E, F, G, H
             uint a0 = 0x6a09e667;
             uint b0 = 0xbb67ae85;
             uint c0 = 0x3c6ef372;
@@ -268,7 +221,6 @@ namespace SHA1_SHA256_MD5
             uint f0 = 0x9b05688c;
             uint g0 = 0x1f83d9ab;
             uint h0 = 0x5be0cd19;
-
             //Inicijalizacija konstante k
             List<uint> K = new List<uint>();
             List<int> prime = PrimeNumbers(64);
@@ -352,6 +304,22 @@ namespace SHA1_SHA256_MD5
             //Vraća hash
             return RoundsSHA256(a0, b0, c0, d0, e0, f0, g0, h0, K, imessage);
             // Console.WriteLine(hash.ToString());
+        }
+
+        //dodaje padding i veličinu originalne poruke
+        private void AppendPadd(List<byte> modmessage)
+        {
+            //Duljina poruke u bitovima 64 bita
+            long ml = modmessage.Count() * 8;
+            //appendanje paddinga
+            modmessage.Add(0x80);
+            long paddsize = Math.Abs(((ml + 1) % 512) - 448) / 8;//ostavljamo mjesta za zadnja 64 bita
+            while (paddsize > 0) //popunjavamo nule
+            {
+                modmessage.Add(0x00);
+                --paddsize;
+            }
+            modmessage.AddRange(BitConverter.GetBytes(ml));
         }
 
         public static uint RotateLeft(uint value, int count)
