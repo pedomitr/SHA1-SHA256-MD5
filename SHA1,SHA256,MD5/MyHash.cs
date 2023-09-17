@@ -228,7 +228,7 @@ namespace SHA1_SHA256_MD5
             foreach(int i in prime)
             {
                 double a = Math.Pow(i, (1/3.0));
-                K.Add((uint)(Math.Truncate((a - Math.Truncate(a)) * Math.Pow(10, 8))));
+                K.Add((uint)(Math.Truncate((a - Math.Truncate(a)) * Math.Pow(2, 32))));
             }
             //Vraća hash
             return RoundsSHA256(a0, b0, c0, d0, e0, f0, g0, h0, K, imessage);
