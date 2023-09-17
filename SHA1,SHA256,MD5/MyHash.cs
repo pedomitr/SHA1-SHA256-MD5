@@ -64,7 +64,7 @@ namespace SHA1_SHA256_MD5
                 }
                 else if (i >= 16 && i <= 31)
                 {
-                    F = (B & D) | (C & (~D));
+                    F = (D & B) | ((~D) & C);
                     j = ((5 * i) + 1) % 16;
                 }
                 else if (i >= 32 && i <= 47)
