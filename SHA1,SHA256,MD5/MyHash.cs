@@ -31,12 +31,12 @@ namespace SHA1_SHA256_MD5
             List<uint> K = new List<uint>();
             for(int i = 0; i < 64; ++i)
             {
-                K.Add((uint)Math.Floor(Math.Pow(2, 32) * Math.Abs(Math.Sin(i + 1))));
+                K.Add((uint)Math.Floor(Math.Pow(2, 32) * Math.Abs(Math.Sin(i + 1.0))));
             }
             //Lista pomaka po rundi
             int[] s = { 7, 12, 17, 22,  7, 12, 17, 22,  7, 12, 17, 22,  7, 12, 17, 22,  //runde 1-16
                         5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,  //runde 17-32
-                        4, 11, 16, 23,  4, 11, 16, 23,  4, 11, 16, 23,  4, 11, 16, 23,  //runde 33 48
+                        4, 11, 16, 23,  4, 11, 16, 23,  4, 11, 16, 23,  4, 11, 16, 23,  //runde 33-48
                         6, 10, 15, 21,  6, 10, 15, 21,  6, 10, 15, 21,  6, 10, 15, 21 };//runde 49-64
 
             //Vraća hash
@@ -49,15 +49,13 @@ namespace SHA1_SHA256_MD5
             //Blok od 512 bita reprezentira 32 bitne riječi Mi
             List<uint> mblock = new List<uint>(ExtractBlock(imessage));
             //Glavna funkcija
-            int i;
             uint F = 0;
-            int j = 0;
             uint A = a0;
             uint B = b0;
             uint C = c0;
             uint D = d0;
 
-            for (i = 0; i < 64; ++i)
+            for (int i= 0,j = 0; i < 64; ++i)
             {
                 if( i >= 0 && i <= 15)
                 {
@@ -77,7 +75,7 @@ namespace SHA1_SHA256_MD5
                 else if (i >= 48 && i <= 63)
                 {
                     F = C ^ (B | (~D));
-                    j = ((7 * i) % 16);
+                    j = (7 * i) % 16;
                 }
 
                 F = F + A + K[i] + mblock[j];
@@ -102,7 +100,7 @@ namespace SHA1_SHA256_MD5
                 string fdigest = ConvertByteArrayToString(digest.ToArray()); 
                return fdigest;//promijeniti direktno return nakon debugiranja            
             }
-            else return RoundsMD5(a0, b0, c0, d0, K, s, imessage);
+            return RoundsMD5(a0, b0, c0, d0, K, s, imessage);
         }
       
         public string MySHA1(byte[] array)
@@ -242,8 +240,8 @@ namespace SHA1_SHA256_MD5
             //Proširiti blok sa 16 na 80
             for (int i = 16; i < 64; ++i)
             {
-                uint s0 = (RotateRight(mblock[i - 15], 7)) ^ (RotateRight(mblock[i - 15], 18)) ^ (mblock[i - 15] >> 3);
-                uint s1 = RotateRight(mblock[i - 2], 17) ^ RotateRight(mblock[i - 2], 19) ^ (mblock[i - 2] >> 10);
+                uint s0 = RotateRight(mblock[i - 15], 7) ^ RotateRight(mblock[i - 15], 18) ^ mblock[i - 15] >> 3;
+                uint s1 = RotateRight(mblock[i - 2], 17) ^ RotateRight(mblock[i - 2], 19) ^ mblock[i - 2] >> 10;
                 mblock.Add(mblock[i - 16] + s0 + mblock[i - 7] + s1);
             }
             //Glavna funkcija
