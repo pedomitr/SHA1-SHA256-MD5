@@ -19,43 +19,20 @@ namespace SHA1_SHA256_MD5
             //Inicijalizacija
             List<byte> modmessage = new List<byte>(array);
             List<uint> imessage = new List<uint>(); ;
-            AppendPadd(modmessage, true);//LE true
+            AppendPadd(modmessage, true);// LE = true
             //Dijelimo u riječi 32 bita
             imessage.AddRange(ConvertByteListToUintList(modmessage));
             //Inicijalizacija konstanti A, B, C, D
             uint a0 = 0x67452301;
             uint b0 = 0xefcdab89;
             uint c0 = 0x98badcfe;
-            uint d0 = 0x10325476;
-            /*uint a0 = 0x01234567;
-            uint b0 = 0x89abcdef;
-            uint c0 = 0xfedcba98;
-            uint d0 = 0x76543210;*/
-            
-            //inicijalizacija konstanti K
+            uint d0 = 0x10325476;           
+            //Inicijalizacija konstanti K
             List<uint> K = new List<uint>();
             for(int i = 0; i < 64; ++i)
             {
                 K.Add((uint)Math.Floor(Math.Pow(2, 32) * Math.Abs(Math.Sin(i + 1.0))));
             }
-
-            /*List<uint> K = new List<uint>
-            { 0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee,
-              0xf57c0faf, 0x4787c62a, 0xa8304613, 0xfd469501,
-              0x698098d8, 0x8b44f7af, 0xffff5bb1, 0x895cd7be,
-              0x6b901122, 0xfd987193, 0xa679438e, 0x49b40821,
-              0xf61e2562, 0xc040b340, 0x265e5a51, 0xe9b6c7aa,
-              0xd62f105d, 0x02441453, 0xd8a1e681, 0xe7d3fbc8,
-              0x21e1cde6, 0xc33707d6, 0xf4d50d87, 0x455a14ed,
-              0xa9e3e905, 0xfcefa3f8, 0x676f02d9, 0x8d2a4c8a,
-              0xfffa3942, 0x8771f681, 0x6d9d6122, 0xfde5380c,
-              0xa4beea44, 0x4bdecfa9, 0xf6bb4b60, 0xbebfbc70,
-              0x289b7ec6, 0xeaa127fa, 0xd4ef3085, 0x04881d05,
-              0xd9d4d039, 0xe6db99e5, 0x1fa27cf8, 0xc4ac5665,
-              0xf4292244, 0x432aff97, 0xab9423a7, 0xfc93a039,
-              0x655b59c3, 0x8f0ccc92, 0xffeff47d, 0x85845dd1,
-              0x6fa87e4f, 0xfe2ce6e0, 0xa3014314, 0x4e0811a1,
-              0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391 };*/
             //Lista pomaka po rundi
             int[] s = { 7, 12, 17, 22,  7, 12, 17, 22,  7, 12, 17, 22,  7, 12, 17, 22,  //runde 1-16
                         5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,  //runde 17-32
@@ -63,7 +40,6 @@ namespace SHA1_SHA256_MD5
                         6, 10, 15, 21,  6, 10, 15, 21,  6, 10, 15, 21,  6, 10, 15, 21 };//runde 49-64
 
             //Vraća hash
-            //imessage.Reverse();
             return RoundsMD5(a0, b0, c0, d0, K, s, imessage);
         }            
 
@@ -71,18 +47,7 @@ namespace SHA1_SHA256_MD5
         private string RoundsMD5(uint a0, uint b0, uint c0, uint d0, List<uint> K, int[] s, List<uint> imessage)
         {
             //Blok od 512 bita reprezentira 32 bitne riječi Mi
-            List<uint> mblock = new List<uint>(ExtractBlock(imessage));
-            //mblock.Reverse();
-            //forsati LE
-            List<byte> bajtovi = new List<byte>();
-            List<uint> batovi = new List<uint>();
-            int inde = 0;
-            foreach (uint broj in mblock)
-            {
-                bajtovi.AddRange(SwitchToBE(BitConverter.GetBytes(broj)));
-                batovi.Add(BitConverter.ToUInt32(bajtovi.ToArray(), 4 * inde++));
-            }
-
+            List<uint> mblock = new List<uint>(ExtractBlock(imessage, true));// LE = true
             //Glavna funkcija 
             uint A = a0;
             uint B = b0;
@@ -113,50 +78,24 @@ namespace SHA1_SHA256_MD5
                     j = (7 * i) % 16;
                 }
 
-                //https://www.hashgenerator.de/hash-functions/md5/
-                /*mblock[j] = mblock[j] & 0xFF;
-                mblock[j] = mblock[j] | (RotateLeft(mblock[j], 8));
-                mblock[j] = mblock[j] | (RotateLeft(mblock[j], 16));*/
                 uint tempA = A;
                 A = D;
                 D = C;
                 C = B;
-                B = RotateLeft(F + tempA + batovi[j] + K[i], s[i]) + B;
+                B = RotateLeft(F + tempA + mblock[j] + K[i], s[i]) + B;
             }
-
             a0 += A;
             b0 += B;
             c0 += C;
             d0 += D;
 
             if (imessage.Count == 0)    
-            {
-                /*List<byte> digest = new List<byte>();
-                if (BitConverter.IsLittleEndian)
-                {
-                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(a0)));
-                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(b0)));
-                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(c0)));
-                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(d0)));
-                }
-                else
-                {
-                    digest.AddRange(BitConverter.GetBytes(a0));
-                    digest.AddRange(BitConverter.GetBytes(b0));
-                    digest.AddRange(BitConverter.GetBytes(c0));
-                    digest.AddRange(BitConverter.GetBytes(d0));
-                }*/
-                
+            {                
                 List<byte> digest = new List<byte>();
                 digest.AddRange(BitConverter.GetBytes(a0));
                 digest.AddRange(BitConverter.GetBytes(b0));
                 digest.AddRange(BitConverter.GetBytes(c0));
                 digest.AddRange(BitConverter.GetBytes(d0));
-                //string fdigest = ConvertByteArrayToString(SwitchToBE(digest.ToArray()));
-                //List<byte> adigest = new List<byte>();
-                //adigest.AddRange(BitConverter.GetBytes(digest));
-                //byte[] thebit = digest.ToArray();
-                //digest.Reverse();
                 string fdigest = ConvertByteArrayToString(digest.ToArray());
                 return fdigest;//promijeniti direktno return nakon debugiranja            
             }
@@ -169,7 +108,7 @@ namespace SHA1_SHA256_MD5
             List<byte> modmessage = new List<byte>(array);
             List<uint> imessage = new List<uint>();;
             //Dijelimo u riječi 32 bita
-            AppendPadd(modmessage, false);//false BE
+            AppendPadd(modmessage, false);//BE = false
             imessage.AddRange(ConvertByteListToUintList(modmessage));
             //Inicijalizacija konstanti A, B, C, D, E
             uint a0 = 0x67452301;
@@ -184,7 +123,7 @@ namespace SHA1_SHA256_MD5
         private string RoundsSHA1(uint a0, uint b0, uint c0, uint d0, uint e0, List<uint> imessage)
         {
             //Blok od 512 bita
-            List<uint> mblock = new List<uint>(ExtractBlock(imessage));
+            List<uint> mblock = new List<uint>(ExtractBlock(imessage, false));// BE = false
             //Proširiti blok sa 16 riječi na 80
             for (int i = 16; i < 80; ++i)
             {
@@ -241,11 +180,11 @@ namespace SHA1_SHA256_MD5
                 List<byte> digest = new List<byte>();
                 if (BitConverter.IsLittleEndian)
                 {
-                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(a0)));
-                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(b0)));
-                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(c0)));
-                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(d0)));
-                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(e0)));
+                    digest.AddRange(SwitchEndianness(BitConverter.GetBytes(a0)));
+                    digest.AddRange(SwitchEndianness(BitConverter.GetBytes(b0)));
+                    digest.AddRange(SwitchEndianness(BitConverter.GetBytes(c0)));
+                    digest.AddRange(SwitchEndianness(BitConverter.GetBytes(d0)));
+                    digest.AddRange(SwitchEndianness(BitConverter.GetBytes(e0)));
                 }
                 else
                 {
@@ -267,7 +206,7 @@ namespace SHA1_SHA256_MD5
             //Inicijalizacija
             List<byte> modmessage = new List<byte>(array);
             List<uint> imessage = new List<uint>(); ;
-            AppendPadd(modmessage, false);//false BE
+            AppendPadd(modmessage, false);// BE = false
             //Dijelimo u riječi 32 bita
             imessage.AddRange(ConvertByteListToUintList(modmessage));  
             //Inicijalizacija konstanti A, B, C, D, E, F, G, H
@@ -295,7 +234,7 @@ namespace SHA1_SHA256_MD5
         private string RoundsSHA256(uint a0, uint b0, uint c0, uint d0, uint e0, uint f0, uint g0, uint h0, List<uint> K, List<uint> imessage)
         {
             //Blok od 512 bita
-            List<uint> mblock = new List<uint>(ExtractBlock(imessage));
+            List<uint> mblock = new List<uint>(ExtractBlock(imessage, false));// BE = false
             //Dodajemo 64 riječi w od 32 bita, početna vrijednost nebitna slobodno 0
             //Proširiti blok sa 16 na 80
             for (int i = 16; i < 64; ++i)
@@ -347,14 +286,14 @@ namespace SHA1_SHA256_MD5
                 List<byte> digest = new List<byte>();
                 if (BitConverter.IsLittleEndian)
                 {
-                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(a0)));
-                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(b0)));
-                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(c0)));
-                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(d0)));
-                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(e0)));
-                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(f0)));
-                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(g0)));
-                    digest.AddRange(SwitchToBE(BitConverter.GetBytes(h0)));
+                    digest.AddRange(SwitchEndianness(BitConverter.GetBytes(a0)));
+                    digest.AddRange(SwitchEndianness(BitConverter.GetBytes(b0)));
+                    digest.AddRange(SwitchEndianness(BitConverter.GetBytes(c0)));
+                    digest.AddRange(SwitchEndianness(BitConverter.GetBytes(d0)));
+                    digest.AddRange(SwitchEndianness(BitConverter.GetBytes(e0)));
+                    digest.AddRange(SwitchEndianness(BitConverter.GetBytes(f0)));
+                    digest.AddRange(SwitchEndianness(BitConverter.GetBytes(g0)));
+                    digest.AddRange(SwitchEndianness(BitConverter.GetBytes(h0)));
                 }
                 else
                 {
@@ -390,14 +329,23 @@ namespace SHA1_SHA256_MD5
             if(BitConverter.IsLittleEndian && le)
                 modmessage.AddRange(BitConverter.GetBytes(ml));
             else 
-                modmessage.AddRange(SwitchToBE(BitConverter.GetBytes(ml)));
+                modmessage.AddRange(SwitchEndianness(BitConverter.GetBytes(ml)));
         }
 
         //Podijeliti poruku na blokove od 512 bita/ 64 bytea
-        private List<uint> ExtractBlock(List<uint> imessage)
+        private List<uint> ExtractBlock(List<uint> imessage, bool le)
         {
             List<uint> block = new List<uint>();
-            block.AddRange(imessage.GetRange(0, 16));
+            //Prebacuje riječi(uint) u LE
+            if (le)
+            {
+                for(int i = 0; i < 16; ++i)
+                {
+                    block.Add(BitConverter.ToUInt32(SwitchEndianness((BitConverter.GetBytes(imessage[i]))), 0));
+                }
+            }
+            else
+                block.AddRange(imessage.GetRange(0, 16));
             imessage.RemoveRange(0, 16);
             return block;
         }
@@ -449,8 +397,8 @@ namespace SHA1_SHA256_MD5
             return uimessage;
         }
 
-        //Uzima BitConverter array koji je LE i pretvara ga u BE
-        private byte[] SwitchToBE(byte[] le)
+        //Uzima array koji je LE i pretvara ga u BE i obrnuto, implementirano za Uint
+        private byte[] SwitchEndianness(byte[] le)
         {
             int i = le.Length;
             byte[] be = new byte[i];
