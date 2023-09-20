@@ -19,7 +19,7 @@ namespace SHA1_SHA256_MD5
         byte[] array;//sprema podatke odabranog filea
         public Form2()
         {
-            InitializeComponent();
+            InitializeComponent();          
         }
 
         private void buttonBack_Click(object sender, EventArgs e)
@@ -115,7 +115,6 @@ namespace SHA1_SHA256_MD5
                         time.Add(timer.Elapsed.TotalMilliseconds);
                         timer.Reset();
                         break;
-                    //TO DO: dodati MyHash varijante u Form 2
                     case 8:
                         var hashMD5_3 = new MyHash();
                         timer.Start();
@@ -178,7 +177,13 @@ namespace SHA1_SHA256_MD5
             for (int i = 0; i < names.Count; i++ )
             {
                 Series series = chart1.Series.Add(names[i]);
-                series.Points.Add(times[i]);
+                series.Points.AddXY(" ", times[i]);
+                series["Column"] = "Outside";
+                series.IsValueShownAsLabel = true;
+                series.LabelBackColor = Color.DarkGray;
+                series.LabelForeColor = Color.Honeydew;
+                series.SmartLabelStyle.Enabled = true;
+                series.SmartLabelStyle.IsMarkerOverlappingAllowed = false;
             }          
         }
 
@@ -212,6 +217,11 @@ namespace SHA1_SHA256_MD5
 
         //Missclick
         private void chart1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form2_Load(object sender, EventArgs e)
         {
 
         }
