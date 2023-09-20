@@ -1,14 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Numerics;
 
 namespace SHA1_SHA256_MD5
 {

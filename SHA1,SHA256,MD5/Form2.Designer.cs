@@ -48,6 +48,8 @@ namespace SHA1_SHA256_MD5
             this.textBoxDatoteka = new System.Windows.Forms.TextBox();
             this.buttonPregled = new System.Windows.Forms.Button();
             this.checkBoxMD5_3 = new System.Windows.Forms.CheckBox();
+            this.checkBoxSHA1_4 = new System.Windows.Forms.CheckBox();
+            this.checkBoxSHA256_4 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -226,14 +228,36 @@ namespace SHA1_SHA256_MD5
             this.checkBoxMD5_3.Name = "checkBoxMD5_3";
             this.checkBoxMD5_3.Size = new System.Drawing.Size(81, 21);
             this.checkBoxMD5_3.TabIndex = 16;
-            this.checkBoxMD5_3.Text = "MD5My ";
+            this.checkBoxMD5_3.Text = "MyMD5 ";
             this.checkBoxMD5_3.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxSHA1_4
+            // 
+            this.checkBoxSHA1_4.AutoSize = true;
+            this.checkBoxSHA1_4.Location = new System.Drawing.Point(12, 317);
+            this.checkBoxSHA1_4.Name = "checkBoxSHA1_4";
+            this.checkBoxSHA1_4.Size = new System.Drawing.Size(88, 21);
+            this.checkBoxSHA1_4.TabIndex = 17;
+            this.checkBoxSHA1_4.Text = "MySHA1 ";
+            this.checkBoxSHA1_4.UseVisualStyleBackColor = true;
+            // 
+            // checkBoxSHA256_4
+            // 
+            this.checkBoxSHA256_4.AutoSize = true;
+            this.checkBoxSHA256_4.Location = new System.Drawing.Point(12, 344);
+            this.checkBoxSHA256_4.Name = "checkBoxSHA256_4";
+            this.checkBoxSHA256_4.Size = new System.Drawing.Size(100, 21);
+            this.checkBoxSHA256_4.TabIndex = 18;
+            this.checkBoxSHA256_4.Text = "MySHA256";
+            this.checkBoxSHA256_4.UseVisualStyleBackColor = true;
             // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1076, 535);
+            this.Controls.Add(this.checkBoxSHA256_4);
+            this.Controls.Add(this.checkBoxSHA1_4);
             this.Controls.Add(this.checkBoxMD5_3);
             this.Controls.Add(this.buttonPregled);
             this.Controls.Add(this.textBoxDatoteka);
@@ -276,5 +300,7 @@ namespace SHA1_SHA256_MD5
         private System.Windows.Forms.Button buttonPregled;
         private System.Windows.Forms.DataVisualization.Charting.Chart chart1;
         private System.Windows.Forms.CheckBox checkBoxMD5_3;
+        private System.Windows.Forms.CheckBox checkBoxSHA1_4;
+        private System.Windows.Forms.CheckBox checkBoxSHA256_4;
     }
 }
