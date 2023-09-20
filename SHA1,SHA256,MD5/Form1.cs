@@ -22,9 +22,11 @@ namespace SHA1_SHA256_MD5
         //Odabir datoteke za hashiranje i istovremena obrada
         private void buttonDatoteka_Click(object sender, EventArgs e)
         {
-            OpenFileDialog open = new OpenFileDialog();
-            open.Title = "Odaberite datoteku";
-            open.Filter = "Text Files (*txt)|*txt";
+            var open = new OpenFileDialog
+            {
+                Title = "Odaberite datoteku",
+                Filter = "Text Files (*txt)|*txt"
+            };
             if (open.ShowDialog() == DialogResult.OK)
             {
                 textBoxDatoteka.Text = open.SafeFileName;

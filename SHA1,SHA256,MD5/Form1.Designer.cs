@@ -81,9 +81,9 @@ namespace SHA1_SHA256_MD5
             // 
             // buttonSHA1
             // 
-            this.buttonSHA1.Location = new System.Drawing.Point(57, 266);
+            this.buttonSHA1.Location = new System.Drawing.Point(42, 292);
             this.buttonSHA1.Name = "buttonSHA1";
-            this.buttonSHA1.Size = new System.Drawing.Size(75, 23);
+            this.buttonSHA1.Size = new System.Drawing.Size(90, 23);
             this.buttonSHA1.TabIndex = 3;
             this.buttonSHA1.Text = "SHA1";
             this.buttonSHA1.UseVisualStyleBackColor = true;
@@ -91,9 +91,9 @@ namespace SHA1_SHA256_MD5
             // 
             // buttonSHA256
             // 
-            this.buttonSHA256.Location = new System.Drawing.Point(57, 296);
+            this.buttonSHA256.Location = new System.Drawing.Point(42, 323);
             this.buttonSHA256.Name = "buttonSHA256";
-            this.buttonSHA256.Size = new System.Drawing.Size(75, 23);
+            this.buttonSHA256.Size = new System.Drawing.Size(90, 23);
             this.buttonSHA256.TabIndex = 4;
             this.buttonSHA256.Text = "SHA256";
             this.buttonSHA256.UseVisualStyleBackColor = true;
@@ -101,9 +101,9 @@ namespace SHA1_SHA256_MD5
             // 
             // buttonMD5
             // 
-            this.buttonMD5.Location = new System.Drawing.Point(57, 324);
+            this.buttonMD5.Location = new System.Drawing.Point(42, 261);
             this.buttonMD5.Name = "buttonMD5";
-            this.buttonMD5.Size = new System.Drawing.Size(75, 23);
+            this.buttonMD5.Size = new System.Drawing.Size(90, 23);
             this.buttonMD5.TabIndex = 5;
             this.buttonMD5.Text = "MD5";
             this.buttonMD5.UseVisualStyleBackColor = true;
@@ -111,7 +111,7 @@ namespace SHA1_SHA256_MD5
             // 
             // textBoxSHA1
             // 
-            this.textBoxSHA1.Location = new System.Drawing.Point(138, 266);
+            this.textBoxSHA1.Location = new System.Drawing.Point(138, 292);
             this.textBoxSHA1.Name = "textBoxSHA1";
             this.textBoxSHA1.ReadOnly = true;
             this.textBoxSHA1.Size = new System.Drawing.Size(513, 22);
@@ -119,7 +119,7 @@ namespace SHA1_SHA256_MD5
             // 
             // textBoxSHA256
             // 
-            this.textBoxSHA256.Location = new System.Drawing.Point(138, 296);
+            this.textBoxSHA256.Location = new System.Drawing.Point(138, 322);
             this.textBoxSHA256.Name = "textBoxSHA256";
             this.textBoxSHA256.ReadOnly = true;
             this.textBoxSHA256.Size = new System.Drawing.Size(513, 22);
@@ -127,7 +127,7 @@ namespace SHA1_SHA256_MD5
             // 
             // textBoxMD5
             // 
-            this.textBoxMD5.Location = new System.Drawing.Point(138, 325);
+            this.textBoxMD5.Location = new System.Drawing.Point(138, 261);
             this.textBoxMD5.Name = "textBoxMD5";
             this.textBoxMD5.ReadOnly = true;
             this.textBoxMD5.Size = new System.Drawing.Size(513, 22);
@@ -145,7 +145,7 @@ namespace SHA1_SHA256_MD5
             // 
             // buttonSHA1Copy
             // 
-            this.buttonSHA1Copy.Location = new System.Drawing.Point(657, 266);
+            this.buttonSHA1Copy.Location = new System.Drawing.Point(657, 291);
             this.buttonSHA1Copy.Name = "buttonSHA1Copy";
             this.buttonSHA1Copy.Size = new System.Drawing.Size(143, 25);
             this.buttonSHA1Copy.TabIndex = 10;
@@ -155,7 +155,7 @@ namespace SHA1_SHA256_MD5
             // 
             // buttonSHA256Copy
             // 
-            this.buttonSHA256Copy.Location = new System.Drawing.Point(657, 292);
+            this.buttonSHA256Copy.Location = new System.Drawing.Point(657, 322);
             this.buttonSHA256Copy.Name = "buttonSHA256Copy";
             this.buttonSHA256Copy.Size = new System.Drawing.Size(143, 25);
             this.buttonSHA256Copy.TabIndex = 11;
@@ -165,7 +165,7 @@ namespace SHA1_SHA256_MD5
             // 
             // buttonMD5Copy
             // 
-            this.buttonMD5Copy.Location = new System.Drawing.Point(657, 322);
+            this.buttonMD5Copy.Location = new System.Drawing.Point(657, 260);
             this.buttonMD5Copy.Name = "buttonMD5Copy";
             this.buttonMD5Copy.Size = new System.Drawing.Size(143, 25);
             this.buttonMD5Copy.TabIndex = 12;
@@ -176,7 +176,7 @@ namespace SHA1_SHA256_MD5
             // labelRezultat
             // 
             this.labelRezultat.AutoSize = true;
-            this.labelRezultat.Location = new System.Drawing.Point(135, 246);
+            this.labelRezultat.Location = new System.Drawing.Point(135, 241);
             this.labelRezultat.Name = "labelRezultat";
             this.labelRezultat.Size = new System.Drawing.Size(49, 17);
             this.labelRezultat.TabIndex = 13;
@@ -226,11 +226,11 @@ namespace SHA1_SHA256_MD5
             // 
             // buttonMD5me
             // 
-            this.buttonMD5me.Location = new System.Drawing.Point(57, 353);
+            this.buttonMD5me.Location = new System.Drawing.Point(42, 353);
             this.buttonMD5me.Name = "buttonMD5me";
-            this.buttonMD5me.Size = new System.Drawing.Size(75, 23);
+            this.buttonMD5me.Size = new System.Drawing.Size(90, 23);
             this.buttonMD5me.TabIndex = 19;
-            this.buttonMD5me.Text = "MD5me";
+            this.buttonMD5me.Text = "MyMD5";
             this.buttonMD5me.UseVisualStyleBackColor = true;
             this.buttonMD5me.Click += new System.EventHandler(this.buttonMD5me_Click);
             // 
@@ -244,21 +244,21 @@ namespace SHA1_SHA256_MD5
             // 
             // buttonSHA1me
             // 
-            this.buttonSHA1me.Location = new System.Drawing.Point(57, 382);
+            this.buttonSHA1me.Location = new System.Drawing.Point(42, 383);
             this.buttonSHA1me.Name = "buttonSHA1me";
-            this.buttonSHA1me.Size = new System.Drawing.Size(75, 23);
+            this.buttonSHA1me.Size = new System.Drawing.Size(90, 23);
             this.buttonSHA1me.TabIndex = 21;
-            this.buttonSHA1me.Text = "SHA1me";
+            this.buttonSHA1me.Text = "MySHA1";
             this.buttonSHA1me.UseVisualStyleBackColor = true;
             this.buttonSHA1me.Click += new System.EventHandler(this.buttonSHA1me_Click);
             // 
             // buttonSHA256me
             // 
-            this.buttonSHA256me.Location = new System.Drawing.Point(45, 411);
+            this.buttonSHA256me.Location = new System.Drawing.Point(42, 414);
             this.buttonSHA256me.Name = "buttonSHA256me";
-            this.buttonSHA256me.Size = new System.Drawing.Size(87, 23);
+            this.buttonSHA256me.Size = new System.Drawing.Size(90, 23);
             this.buttonSHA256me.TabIndex = 22;
-            this.buttonSHA256me.Text = "SHA256me";
+            this.buttonSHA256me.Text = "MySHA256";
             this.buttonSHA256me.UseVisualStyleBackColor = true;
             this.buttonSHA256me.Click += new System.EventHandler(this.buttonSHA256me_Click);
             // 

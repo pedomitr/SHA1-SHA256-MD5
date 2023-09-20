@@ -31,11 +31,7 @@ namespace SHA1_SHA256_MD5
         //Pokreće odabrane hasheve i prikazuje rezultat u chartu.//Višak!!!
         private void buttonRun_Click(object sender, EventArgs e)
         {
-            List<int> check = PickedHash();
-            if (checkBoxSHA1_1.Checked)
-            {
-                
-            }
+
         }
 
         //Hash metode, ako nije odabran ne izvađa se
@@ -139,10 +135,12 @@ namespace SHA1_SHA256_MD5
          //Odabir datoteke za hashiranje i spremanje puta do datoteke
          private void buttonDatoteka_Click(object sender, EventArgs e)
          {
-             OpenFileDialog open = new OpenFileDialog();
-             open.Title = "Odaberite datoteku";
-             open.Filter = "Text Files (*txt)|*txt";
-             if (open.ShowDialog() == DialogResult.OK)
+            var open = new OpenFileDialog
+            {
+                Title = "Odaberite datoteku",
+                Filter = "Text Files (*txt)|*txt"
+            };
+            if (open.ShowDialog() == DialogResult.OK)
              {
                 //StreamReader reader = new StreamReader(File.OpenRead(open.FileName));//višak!!!
                 textBoxDatoteka.Text = open.SafeFileName;
