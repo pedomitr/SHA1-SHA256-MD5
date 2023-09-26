@@ -228,7 +228,7 @@ namespace SHA1_SHA256_MD5
             //Blok od 512 bita
             List<uint> mblock = new List<uint>(ExtractBlock(imessage, false));// BE = false
             //Dodajemo 64 riječi w od 32 bita, početna vrijednost nebitna slobodno 0
-            //Proširiti blok sa 16 na 80
+            //Proširiti blok sa 16 na 64
             for (int i = 16; i < 64; ++i)
             {
                 uint s0 = RotateRight(mblock[i - 15], 7) ^ RotateRight(mblock[i - 15], 18) ^ mblock[i - 15] >> 3;
@@ -309,7 +309,7 @@ namespace SHA1_SHA256_MD5
         private void AppendPadd(List<byte> modmessage, bool le)
         {
             //Duljina poruke u bitovima 64 bita
-            long ml = modmessage.Count() * 8;
+            long ml = modmessage.Count * 8;
             //appendanje paddinga
             modmessage.Add(0x80);
             long paddsize = Math.Abs(((ml + 1) % 512) - 448) / 8;//ostavljamo mjesta za zadnja 64 bita
@@ -381,7 +381,7 @@ namespace SHA1_SHA256_MD5
             List<uint> uimessage = new List<uint>();
             List<byte> bmessage = new List<byte>();
             bmessage.AddRange(modmessage);
-            while (bmessage.Count > 0)
+            while (bmessage.Count > 3)//privremeno rješenje kada je prevelik podatak
             {
                 uimessage.Add((uint)((((((bmessage[0] << 8) | bmessage[1]) << 8) | bmessage[2]) << 8) | bmessage[3]));
                 bmessage.RemoveRange(0, 4);
