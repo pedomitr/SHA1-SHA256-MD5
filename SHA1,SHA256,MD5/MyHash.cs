@@ -10,7 +10,7 @@ namespace SHA1_SHA256_MD5
         {
             //Inicijalizacija
             List<byte> modmessage = new List<byte>(array);
-            List<uint> imessage = new List<uint>(); ;
+            List<uint> imessage = new List<uint>();
             AppendPadd(modmessage, true);// LE = true
             //Dijelimo u riječi 32 bita
             imessage.AddRange(ConvertByteListToUintList(modmessage));
@@ -32,11 +32,28 @@ namespace SHA1_SHA256_MD5
                         6, 10, 15, 21,  6, 10, 15, 21,  6, 10, 15, 21,  6, 10, 15, 21 };//runde 49-64
 
             //Vraća hash
-            return RoundsMD5(a0, b0, c0, d0, K, s, imessage);
+            string mdigest = "Error";
+            while(imessage.Count > 0)
+            {
+                List<byte> digest = new List<byte>();
+                digest = RoundsMD5(0, ref a0, ref b0, ref c0, ref d0, K, s, imessage);
+                if(imessage.Count > 0)
+                {
+                    List<uint> restack = new List<uint>();
+                    restack = ConvertByteListToUintList(digest);
+                    a0 = restack[0];
+                    b0 = restack[1];
+                    c0 = restack[2];
+                    d0 = restack[3];
+                }              
+                mdigest = ConvertByteArrayToString(digest.ToArray());
+            }
+            //return RoundsMD5(a, a0, b0, c0, d0, K, s, imessage);
+            return mdigest;
         }            
 
         //Obrađuje cijelu poruku i vraća hash u obiku stringa
-        private string RoundsMD5(uint a0, uint b0, uint c0, uint d0, List<uint> K, int[] s, List<uint> imessage)
+        private List<byte> RoundsMD5(int stack,ref uint a0, ref uint b0, ref uint c0, ref uint d0, List<uint> K, int[] s, List<uint> imessage)
         {
             //Blok od 512 bita reprezentira 32 bitne riječi Mi
             List<uint> mblock = new List<uint>(ExtractBlock(imessage, true));// LE = true
@@ -89,9 +106,25 @@ namespace SHA1_SHA256_MD5
                 digest.AddRange(BitConverter.GetBytes(c0));
                 digest.AddRange(BitConverter.GetBytes(d0));
                 string fdigest = ConvertByteArrayToString(digest.ToArray());
-                return fdigest;//promijeniti direktno return nakon debugiranja            
+                return digest;//promijeniti direktno return nakon debugiranja            
             }
-            return RoundsMD5(a0, b0, c0, d0, K, s, imessage);
+            if (stack >= 100)
+            {
+                List<byte> digest = new List<byte>();
+                digest.AddRange(BitConverter.GetBytes(a0));
+                digest.AddRange(BitConverter.GetBytes(b0));
+                digest.AddRange(BitConverter.GetBytes(c0));
+                digest.AddRange(BitConverter.GetBytes(d0));
+                string fdigest = ConvertByteArrayToString(digest.ToArray());
+                return digest;
+            }    
+            ++stack;
+            return RoundsMD5(stack, ref a0, ref b0, ref c0, ref d0, K, s, imessage);// a dodan radi debugiranja
+        }
+
+        private string RestackRounds(uint a0, uint b0, uint c0, uint d0, List<uint> K, int[] s, List<uint> imessage)
+        {
+            return null;
         }
       
         public string MySHA1(byte[] array)
@@ -109,10 +142,28 @@ namespace SHA1_SHA256_MD5
             uint d0 = 0x10325476;
             uint e0 = 0xc3d2e1f0;
             //Vraća hash
-            return RoundsSHA1(a0, b0, c0, d0, e0, imessage);
+            string mdigest = "Error";
+            while (imessage.Count > 0)
+            {
+                List<byte> digest = new List<byte>();
+                digest = RoundsSHA1(0, ref a0, ref b0, ref c0, ref d0, ref e0, imessage);
+                if (imessage.Count > 0)
+                {
+                    List<uint> restack = new List<uint>();
+                    restack = ConvertByteListToUintList(digest);
+                    a0 = restack[0];
+                    b0 = restack[1];
+                    c0 = restack[2];
+                    d0 = restack[3];
+                    e0 = restack[4];
+                }
+                mdigest = ConvertByteArrayToString(digest.ToArray());
+            }
+            //return RoundsMD5(a, a0, b0, c0, d0, K, s, imessage);
+            return mdigest;
         }
 
-        private string RoundsSHA1(uint a0, uint b0, uint c0, uint d0, uint e0, List<uint> imessage)
+        private List<byte> RoundsSHA1(int stack, ref uint a0, ref uint b0, ref uint c0, ref uint d0, ref uint e0, List<uint> imessage)
         {
             //Blok od 512 bita
             List<uint> mblock = new List<uint>(ExtractBlock(imessage, false));// BE = false
@@ -187,10 +238,33 @@ namespace SHA1_SHA256_MD5
                     digest.AddRange(BitConverter.GetBytes(e0));
                 }
                 string fdigest = ConvertByteArrayToString(digest.ToArray());
-                return fdigest;//promijeniti direktno return nakon debugiranja            
+                return digest;//promijeniti direktno return nakon debugiranja            
             }
+            if (stack >= 100)
+            {
+                List<byte> digest = new List<byte>();
+                if (BitConverter.IsLittleEndian)
+                {
+                    digest.AddRange(SwitchEndianness(BitConverter.GetBytes(a0)));
+                    digest.AddRange(SwitchEndianness(BitConverter.GetBytes(b0)));
+                    digest.AddRange(SwitchEndianness(BitConverter.GetBytes(c0)));
+                    digest.AddRange(SwitchEndianness(BitConverter.GetBytes(d0)));
+                    digest.AddRange(SwitchEndianness(BitConverter.GetBytes(e0)));
+                }
+                else
+                {
+                    digest.AddRange(BitConverter.GetBytes(a0));
+                    digest.AddRange(BitConverter.GetBytes(b0));
+                    digest.AddRange(BitConverter.GetBytes(c0));
+                    digest.AddRange(BitConverter.GetBytes(d0));
+                    digest.AddRange(BitConverter.GetBytes(e0));
+                }
+                string fdigest = ConvertByteArrayToString(digest.ToArray());
+                return digest;//promijeniti direktno return nakon debugiranja    
+            }
+            ++stack;
             //Vraća hash
-            return RoundsSHA1(a0, b0, c0, d0, e0, imessage);
+            return RoundsSHA1(stack, ref a0, ref b0, ref c0, ref d0, ref e0, imessage);
         }
 
         public string MySHA256(byte[] array)
@@ -220,10 +294,31 @@ namespace SHA1_SHA256_MD5
                 K.Add((uint)(Math.Truncate((a - Math.Truncate(a)) * Math.Pow(2, 32))));
             }
             //Vraća hash
-            return RoundsSHA256(a0, b0, c0, d0, e0, f0, g0, h0, K, imessage);
+            string mdigest = "Error";
+            while (imessage.Count > 0)
+            {
+                List<byte> digest = new List<byte>();
+                digest = RoundsSHA256(0, ref a0, ref b0, ref c0, ref d0, ref e0, ref f0, ref g0, ref h0, K, imessage);
+                if (imessage.Count > 0)
+                {
+                    List<uint> restack = new List<uint>();
+                    restack = ConvertByteListToUintList(digest);
+                    a0 = restack[0];
+                    b0 = restack[1];
+                    c0 = restack[2];
+                    d0 = restack[3];
+                    e0 = restack[4];
+                    f0 = restack[5];
+                    g0 = restack[6];
+                    h0 = restack[7];
+                }
+                mdigest = ConvertByteArrayToString(digest.ToArray());
+            }
+            //return RoundsSHA256(0, ref a0, ref b0, ref c0, ref d0, ref e0, ref f0, ref g0, ref h0, K, imessage);
+            return mdigest;
         }
 
-        private string RoundsSHA256(uint a0, uint b0, uint c0, uint d0, uint e0, uint f0, uint g0, uint h0, List<uint> K, List<uint> imessage)
+        private List<byte> RoundsSHA256(int stack, ref uint a0, ref uint b0, ref uint c0, ref uint d0, ref uint e0, ref uint f0, ref uint g0, ref uint h0, List<uint> K, List<uint> imessage)
         {
             //Blok od 512 bita
             List<uint> mblock = new List<uint>(ExtractBlock(imessage, false));// BE = false
@@ -299,10 +394,40 @@ namespace SHA1_SHA256_MD5
                     digest.AddRange(BitConverter.GetBytes(h0));
                 }
                     string fdigest = ConvertByteArrayToString(digest.ToArray());
-                return fdigest;//promijeniti direktno return nakon debugiranja            
+                return digest;//promijeniti direktno return nakon debugiranja            
             }
+            if (stack >= 100)
+            {
+                List<byte> digest = new List<byte>();
+                if (BitConverter.IsLittleEndian)
+                {
+                    digest.AddRange(SwitchEndianness(BitConverter.GetBytes(a0)));
+                    digest.AddRange(SwitchEndianness(BitConverter.GetBytes(b0)));
+                    digest.AddRange(SwitchEndianness(BitConverter.GetBytes(c0)));
+                    digest.AddRange(SwitchEndianness(BitConverter.GetBytes(d0)));
+                    digest.AddRange(SwitchEndianness(BitConverter.GetBytes(e0)));
+                    digest.AddRange(SwitchEndianness(BitConverter.GetBytes(f0)));
+                    digest.AddRange(SwitchEndianness(BitConverter.GetBytes(g0)));
+                    digest.AddRange(SwitchEndianness(BitConverter.GetBytes(h0)));
+                }
+                else
+                {
+                    digest.AddRange(BitConverter.GetBytes(a0));
+                    digest.AddRange(BitConverter.GetBytes(b0));
+                    digest.AddRange(BitConverter.GetBytes(c0));
+                    digest.AddRange(BitConverter.GetBytes(d0));
+                    digest.AddRange(BitConverter.GetBytes(e0));
+                    digest.AddRange(BitConverter.GetBytes(f0));
+                    digest.AddRange(BitConverter.GetBytes(g0));
+                    digest.AddRange(BitConverter.GetBytes(h0));
+                }
+                string fdigest = ConvertByteArrayToString(digest.ToArray());
+                return digest;//promijeniti direktno return nakon debugiranja
+            }
+            ++stack;
+
             //Vraća hash
-            return RoundsSHA256(a0, b0, c0, d0, e0, f0, g0, h0, K, imessage);
+            return RoundsSHA256(stack, ref a0, ref b0, ref c0, ref d0, ref e0, ref f0, ref g0, ref h0, K, imessage);
         }
 
         //Dodaje padding i veličinu originalne poruke
