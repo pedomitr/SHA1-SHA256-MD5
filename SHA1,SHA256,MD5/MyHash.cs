@@ -312,7 +312,7 @@ namespace SHA1_SHA256_MD5
             long ml = modmessage.Count * 8;
             //appendanje paddinga
             modmessage.Add(0x80);
-            long paddsize = Math.Abs(((ml + 1) % 512) - 448) / 8;//ostavljamo mjesta za zadnja 64 bita
+            long paddsize = Math.Abs(((ml + 8) % 512) - 448) / 8;//ostavljamo mjesta za zadnja 64 bita
             while (paddsize > 0) //popunjavamo nule
             {
                 modmessage.Add(0x00);
@@ -379,12 +379,12 @@ namespace SHA1_SHA256_MD5
         private List<uint> ConvertByteListToUintList(List<byte> modmessage)
         {
             List<uint> uimessage = new List<uint>();
-            List<byte> bmessage = new List<byte>();
-            bmessage.AddRange(modmessage);
-            while (bmessage.Count > 3)//privremeno rješenje kada je prevelik podatak
+            //List<byte> bmessage = new List<byte>();//višak
+            //bmessage.AddRange(modmessage);
+            while (modmessage.Count > 3)//privremeno rješenje kada je prevelik podatak
             {
-                uimessage.Add((uint)((((((bmessage[0] << 8) | bmessage[1]) << 8) | bmessage[2]) << 8) | bmessage[3]));
-                bmessage.RemoveRange(0, 4);
+                uimessage.Add((uint)((((((modmessage[0] << 8) | modmessage[1]) << 8) | modmessage[2]) << 8) | modmessage[3]));
+                modmessage.RemoveRange(0, 4);
             }
             return uimessage;
         }
