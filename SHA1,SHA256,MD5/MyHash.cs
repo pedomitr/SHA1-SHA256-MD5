@@ -36,16 +36,7 @@ namespace SHA1_SHA256_MD5
             while(imessage.Count > 0)
             {
                 List<byte> digest = new List<byte>();
-                digest = RoundsMD5(0, ref a0, ref b0, ref c0, ref d0, K, s, imessage);
-                if(imessage.Count > 0)
-                {
-                    List<uint> restack = new List<uint>();
-                    restack = ConvertByteListToUintList(digest);
-                    a0 = restack[0];
-                    b0 = restack[1];
-                    c0 = restack[2];
-                    d0 = restack[3];
-                }              
+                digest = RoundsMD5(0, ref a0, ref b0, ref c0, ref d0, K, s, imessage);         
                 mdigest = ConvertByteArrayToString(digest.ToArray());
             }
             //return RoundsMD5(a, a0, b0, c0, d0, K, s, imessage);
@@ -147,16 +138,6 @@ namespace SHA1_SHA256_MD5
             {
                 List<byte> digest = new List<byte>();
                 digest = RoundsSHA1(0, ref a0, ref b0, ref c0, ref d0, ref e0, imessage);
-                if (imessage.Count > 0)
-                {
-                    List<uint> restack = new List<uint>();
-                    restack = ConvertByteListToUintList(digest);
-                    a0 = restack[0];
-                    b0 = restack[1];
-                    c0 = restack[2];
-                    d0 = restack[3];
-                    e0 = restack[4];
-                }
                 mdigest = ConvertByteArrayToString(digest.ToArray());
             }
             //return RoundsMD5(a, a0, b0, c0, d0, K, s, imessage);
@@ -299,19 +280,6 @@ namespace SHA1_SHA256_MD5
             {
                 List<byte> digest = new List<byte>();
                 digest = RoundsSHA256(0, ref a0, ref b0, ref c0, ref d0, ref e0, ref f0, ref g0, ref h0, K, imessage);
-                if (imessage.Count > 0)
-                {
-                    List<uint> restack = new List<uint>();
-                    restack = ConvertByteListToUintList(digest);
-                    a0 = restack[0];
-                    b0 = restack[1];
-                    c0 = restack[2];
-                    d0 = restack[3];
-                    e0 = restack[4];
-                    f0 = restack[5];
-                    g0 = restack[6];
-                    h0 = restack[7];
-                }
                 mdigest = ConvertByteArrayToString(digest.ToArray());
             }
             //return RoundsSHA256(0, ref a0, ref b0, ref c0, ref d0, ref e0, ref f0, ref g0, ref h0, K, imessage);
@@ -504,8 +472,6 @@ namespace SHA1_SHA256_MD5
         private List<uint> ConvertByteListToUintList(List<byte> modmessage)
         {
             List<uint> uimessage = new List<uint>();
-            //List<byte> bmessage = new List<byte>();//višak
-            //bmessage.AddRange(modmessage);
             while (modmessage.Count > 3)//privremeno rješenje kada je prevelik podatak
             {
                 uimessage.Add((uint)((((((modmessage[0] << 8) | modmessage[1]) << 8) | modmessage[2]) << 8) | modmessage[3]));
