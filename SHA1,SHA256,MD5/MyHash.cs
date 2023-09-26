@@ -112,11 +112,6 @@ namespace SHA1_SHA256_MD5
             ++stack;
             return RoundsMD5(stack, ref a0, ref b0, ref c0, ref d0, K, s, imessage);// a dodan radi debugiranja
         }
-
-        private string RestackRounds(uint a0, uint b0, uint c0, uint d0, List<uint> K, int[] s, List<uint> imessage)
-        {
-            return null;
-        }
       
         public string MySHA1(byte[] array)
         {
@@ -405,7 +400,13 @@ namespace SHA1_SHA256_MD5
             long ml = modmessage.Count * 8;
             //appendanje paddinga
             modmessage.Add(0x80);
-            long paddsize = Math.Abs(((ml + 8) % 512) - 448) / 8;//ostavljamo mjesta za zadnja 64 bita
+            long paddsize;
+            long padd = (ml + 8) % 512;
+            if (padd > 448)
+                paddsize = (512 - padd + 448) / 8;//ostavljamo mjesta za zadnja 64 bita
+            else
+                paddsize = (448 - padd) / 8;
+
             while (paddsize > 0) //popunjavamo nule
             {
                 modmessage.Add(0x00);
