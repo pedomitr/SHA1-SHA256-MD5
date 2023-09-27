@@ -48,22 +48,22 @@ namespace SHA1_SHA256_MD5
             for ( int i= 0,j = 0; i < 64; ++i)
             {               
                 uint F = 0;
-                if( i >= 0 && i <= 15)
+                if(i <= 15 && i >= 0 )
                 {
                     F = (B & C) | ((~B) & D);
                     j = i;
                 }
-                else if (i >= 16 && i <= 31)
+                else if (i <= 31 && i >= 16)
                 {
                     F = (D & B) | ((~D) & C);
                     j = ((5 * i) + 1) % 16;
                 }
-                else if (i >= 32 && i <= 47)
+                else if (i <= 47 && i >= 32)
                 {
                     F = B ^ C ^ D;
                     j = ((3 * i) + 5) % 16;
                 }
-                else if (i >= 48 && i <= 63)
+                else if (i <= 63 && i >= 48)
                 {
                     F = C ^ (B | (~D));
                     j = (7 * i) % 16;
@@ -124,22 +124,22 @@ namespace SHA1_SHA256_MD5
 
             for (int i = 0; i < 80; ++i)
             {
-                if (i >= 0 && i <= 19)//moguća optimizacija, zamijeniti pozicije uvjeta
+                if (i <= 19 && i >= 0)//moguća optimizacija, zamijeniti pozicije uvjeta
                 {
                     F = (B & C) | ((~B) & D);
                     k = 0x5A827999;
                 }
-                else if (i >= 20 && i <= 39)
+                else if (i <= 39 && i >= 20)
                 {
                     F = B ^ C ^ D;
                     k = 0x6ED9EBA1;
                 }
-                else if (i >= 40 && i <= 59)
+                else if (i <= 59 && i >= 40)
                 {
                     F = (B & C) | (B & D) | (C & D);
                     k = 0x8F1BBCDC;
                 }
-                else if (i >= 60 && i <= 79)
+                else if (i <= 79 && i >= 60)
                 {
                     F = B ^ C ^ D;
                     k = 0xCA62C1D6;
