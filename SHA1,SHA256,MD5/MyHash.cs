@@ -27,11 +27,9 @@ namespace SHA1_SHA256_MD5
                         5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,  5,  9, 14, 20,  //runde 17-32
                         4, 11, 16, 23,  4, 11, 16, 23,  4, 11, 16, 23,  4, 11, 16, 23,  //runde 33-48
                         6, 10, 15, 21,  6, 10, 15, 21,  6, 10, 15, 21,  6, 10, 15, 21 };//runde 49-64
-
-            //Vraća hash
+           //Vraća hash
             while (RoundsMD5(0, ref h, K, s, imessage));
-            string mdigest = MessageDigest(h, true);
-            return mdigest;
+            return MessageDigest(h, true);
         }            
 
         //Obrađuje cijelu poruku i vraća hash u obiku stringa
@@ -68,7 +66,6 @@ namespace SHA1_SHA256_MD5
                     F = C ^ (B | (~D));
                     j = (7 * i) % 16;
                 }
-
                 uint tempA = A;
                 A = D;
                 D = C;
@@ -99,9 +96,8 @@ namespace SHA1_SHA256_MD5
             //Inicijalizacija konstanti A, B, C, D, E
             uint[] h = { 0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476, 0xc3d2e1f0 };
             //Vraća hash
-            while (RoundsSHA1(0, ref h, imessage)) ;
-            string mdigest = MessageDigest(h, false);
-            return mdigest;
+            while (RoundsSHA1(0, ref h, imessage)); 
+            return MessageDigest(h, false);
         }
 
         private bool RoundsSHA1(int stack, ref uint[] h, List<uint> imessage)
@@ -144,7 +140,6 @@ namespace SHA1_SHA256_MD5
                     F = B ^ C ^ D;
                     k = 0xCA62C1D6;
                 }
-
                 uint temp = RotateLeft(A, 5) + F + E + k + mblock[i];
                 E = D;
                 D = C;
@@ -152,7 +147,6 @@ namespace SHA1_SHA256_MD5
                 B = A;
                 A = temp;
             }
-
             h[0] += A;
             h[1] += B;
             h[2] += C;
@@ -190,8 +184,7 @@ namespace SHA1_SHA256_MD5
             }
             //Vraća hash
             while (RoundsSHA256(0, ref h, K, imessage));
-            string mdigest = MessageDigest(h, false);
-            return mdigest;
+            return MessageDigest(h, false);
         }
 
         private bool RoundsSHA256(int stack, ref uint[] h, List<uint> K, List<uint> imessage)
@@ -234,7 +227,6 @@ namespace SHA1_SHA256_MD5
                 B = A;
                 A = temp0 + temp1;
             }
-
             h[0] += A;
             h[1] += B;
             h[2] += C;
@@ -249,7 +241,6 @@ namespace SHA1_SHA256_MD5
             if (stack >= 100)
                 return true;
             ++stack;
-
             //Vraća hash
             return RoundsSHA256(stack, ref h, K, imessage);
         }
@@ -261,17 +252,16 @@ namespace SHA1_SHA256_MD5
             long ml = modmessage.Count * 8;
             //appendanje paddinga
             modmessage.Add(0x80);
-            long paddsize;
             long padd = (ml + 8) % 512;
             if (padd > 448)
-                paddsize = (512 - padd + 448) / 8;//ostavljamo mjesta za zadnja 64 bita
+                padd = (512 - padd + 448) / 8;//ostavljamo mjesta za zadnja 64 bita
             else
-                paddsize = (448 - padd) / 8;
+                padd = (448 - padd) / 8;
 
-            while (paddsize > 0) //popunjavamo nule
+            while (padd > 0) //popunjavamo nule
             {
                 modmessage.Add(0x00);
-                --paddsize;
+                --padd;
             }
             if(le)
                 modmessage.AddRange(BitConverter.GetBytes(ml));
