@@ -273,7 +273,7 @@ namespace SHA1_SHA256_MD5
                 modmessage.Add(0x00);
                 --paddsize;
             }
-            if(BitConverter.IsLittleEndian && le)
+            if(le)
                 modmessage.AddRange(BitConverter.GetBytes(ml));
             else 
                 modmessage.AddRange(SwitchEndianness(BitConverter.GetBytes(ml)));
@@ -285,27 +285,17 @@ namespace SHA1_SHA256_MD5
             List<uint> block = new List<uint>();
             //Prebacuje riječi(uint) u LE
             if (le)
-            {
                 for(int i = 0; i < 16; ++i)
-                {
                     block.Add(BitConverter.ToUInt32(SwitchEndianness((BitConverter.GetBytes(imessage[i]))), 0));
-                }
-            }
             else
                 block.AddRange(imessage.GetRange(0, 16));
             imessage.RemoveRange(0, 16);
             return block;
         }
 
-        public static uint RotateLeft(uint value, int count)
-        {
-            return (value << count) | (value >> (32 - count));
-        }
+        public static uint RotateLeft(uint value, int count) => (value << count) | (value >> (32 - count));
 
-        public static uint RotateRight(uint value, int count)
-        {
-            return (value >> count) | (value << (32 - count));
-        }
+        public static uint RotateRight(uint value, int count) => (value >> count) | (value << (32 - count));
 
         //Vraća listu primarnih brojeva
         private List<int> PrimeNumbers(int a)
@@ -313,13 +303,18 @@ namespace SHA1_SHA256_MD5
             List<int> prime = new List<int>();
             for (int i = 2, number = 2;  prime.Count < a;)
             {
-                if (number % i  == 0 && number > i)
+                if (number % i == 0 && number > i)
                 {
                     ++number;
                     i = 2;
                     continue;
                 }
-                else if (number % i == 0  && (i >= number / 3))
+                else if (number % i == 0 && (i >= number / 3))
+                {
+                    prime.Add(number++);
+                    i = 2;
+                }
+                else if (number / 3 == i && number % 3 != 0)
                 {
                     prime.Add(number++);
                     i = 2;
