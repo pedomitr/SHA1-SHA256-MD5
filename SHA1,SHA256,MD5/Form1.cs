@@ -100,10 +100,7 @@ namespace SHA1_SHA256_MD5
             buttonMD5me_Click(sender, e);
             buttonSHA1me_Click(sender, e);
             buttonSHA256me_Click(sender, e);
-
         }
-
-
 
         //Pomoćne metode za hashiranje. Pretvorbe string/byte [].
         byte[] ConvertStringToByteArray()
@@ -157,9 +154,7 @@ namespace SHA1_SHA256_MD5
                 buttonSHA1me.Enabled = true;
                 buttonSHA256me.Enabled = true;
                 buttonRunAll.Enabled = true;
-
             }
-
         }
 
         private void radioButton2_CheckedChanged(object sender, EventArgs e)

@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
+
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
@@ -189,7 +185,10 @@ namespace SHA1_SHA256_MD5
         //Vraća listu odabranih hasheva
         List<int> PickedHash()
         {
-            bool[] a = { checkBoxSHA1_1.Checked, checkBoxSHA1_2.Checked, checkBoxSHA1_3.Checked, checkBoxSHA256_1.Checked, checkBoxSHA256_2.Checked, checkBoxSHA256_3.Checked, checkBoxMD5_1.Checked, checkBoxMD5_2.Checked, checkBoxMD5_3.Checked, checkBoxSHA1_4.Checked, checkBoxSHA256_4.Checked };
+            bool[] a = { checkBoxSHA1_1.Checked, checkBoxSHA1_2.Checked, checkBoxSHA1_3.Checked, 
+                checkBoxSHA256_1.Checked, checkBoxSHA256_2.Checked, checkBoxSHA256_3.Checked, 
+                checkBoxMD5_1.Checked, checkBoxMD5_2.Checked, checkBoxMD5_3.Checked, 
+                checkBoxSHA1_4.Checked, checkBoxSHA256_4.Checked };
             List<int> picked = new List<int>();
             for (int i = 0; i < a.Length; i++)
             {
@@ -205,7 +204,10 @@ namespace SHA1_SHA256_MD5
         List<string> HashNames()
         {
             List<int> picked = PickedHash();
-            List<string> names = new List<string> { checkBoxSHA1_1.Text, checkBoxSHA1_2.Text, checkBoxSHA1_3.Text, checkBoxSHA256_1.Text, checkBoxSHA256_2.Text, checkBoxSHA256_3.Text, checkBoxMD5_1.Text, checkBoxMD5_2.Text, checkBoxMD5_3.Text, checkBoxSHA1_4.Text, checkBoxSHA256_4.Text };
+            string[] names = { checkBoxSHA1_1.Text, checkBoxSHA1_2.Text, checkBoxSHA1_3.Text,
+                checkBoxSHA256_1.Text, checkBoxSHA256_2.Text, checkBoxSHA256_3.Text,
+                checkBoxMD5_1.Text, checkBoxMD5_2.Text, checkBoxMD5_3.Text,
+                checkBoxSHA1_4.Text, checkBoxSHA256_4.Text };
             List<string> pickednames = new List<string>();
             for(int i = 0; i < picked.Count; ++i)
             {

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace SHA1_SHA256_MD5
 {
@@ -12,7 +11,7 @@ namespace SHA1_SHA256_MD5
             List<byte> modmessage = new List<byte>(array);
             List<uint> imessage = new List<uint>();
             AppendPadd(modmessage, true);// LE = true
-            //Dijelimo u riječi 32 bita
+            //Dijelimo u riječi od 32 bita
             imessage.AddRange(ConvertByteListToUintList(modmessage));
             //Inicijalizacija konstanti A, B, C, D
             uint[] h = { 0x67452301, 0xefcdab89, 0x98badcfe, 0x10325476 };
@@ -32,7 +31,7 @@ namespace SHA1_SHA256_MD5
             return MessageDigest(h, true);
         }            
 
-        //Obrađuje cijelu poruku i vraća hash u obiku stringa
+        //Obrađuje cijelu poruku i vraća bool za refreshanje stacka
         private bool RoundsMD5(int stack, ref uint[] h, List<uint> K, int[] s, List<uint> imessage)
         {
             //Blok od 512 bita reprezentira 32 bitne riječi Mi
@@ -120,7 +119,7 @@ namespace SHA1_SHA256_MD5
 
             for (int i = 0; i < 80; ++i)
             {
-                if (i <= 19 && i >= 0)//moguća optimizacija, zamijeniti pozicije uvjeta
+                if (i <= 19 && i >= 0)
                 {
                     F = (B & C) | ((~B) & D);
                     k = 0x5A827999;
@@ -315,19 +314,19 @@ namespace SHA1_SHA256_MD5
             return prime;
         }
 
-
         private List<uint> ConvertByteListToUintList(List<byte> modmessage)
         {
             List<uint> uimessage = new List<uint>();
             while (modmessage.Count > 3)//privremeno rješenje kada je prevelik podatak
             {
-                uimessage.Add((uint)((((((modmessage[0] << 8) | modmessage[1]) << 8) | modmessage[2]) << 8) | modmessage[3]));
+                uimessage.Add((uint)((((((modmessage[0] << 8) | modmessage[1]) << 8) | 
+                                                modmessage[2]) << 8) | modmessage[3]));
                 modmessage.RemoveRange(0, 4);
             }
             return uimessage;
         }
 
-        //Uzima array koji je LE i pretvara ga u BE i obrnuto, implementirano za Uint
+        //Uzima array koji je LE i pretvara ga u BE i obrnuto
         private byte[] SwitchEndianness(byte[] le)
         {
             int i = le.Length;
