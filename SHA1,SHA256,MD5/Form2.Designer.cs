@@ -38,7 +38,6 @@ namespace SHA1_SHA256_MD5
             System.Windows.Forms.DataVisualization.Charting.Title title1 = new System.Windows.Forms.DataVisualization.Charting.Title();
             this.buttonBack = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.buttonRun = new System.Windows.Forms.Button();
             this.checkBoxSHA1_1 = new System.Windows.Forms.CheckBox();
             this.checkBoxSHA1_2 = new System.Windows.Forms.CheckBox();
             this.checkBoxSHA1_3 = new System.Windows.Forms.CheckBox();
@@ -59,7 +58,7 @@ namespace SHA1_SHA256_MD5
             // 
             // buttonBack
             // 
-            this.buttonBack.Location = new System.Drawing.Point(989, 500);
+            this.buttonBack.Location = new System.Drawing.Point(1016, 500);
             this.buttonBack.Name = "buttonBack";
             this.buttonBack.Size = new System.Drawing.Size(75, 23);
             this.buttonBack.TabIndex = 0;
@@ -75,17 +74,6 @@ namespace SHA1_SHA256_MD5
             this.button1.TabIndex = 1;
             this.button1.Text = "button1";
             this.button1.UseVisualStyleBackColor = true;
-            // 
-            // buttonRun
-            // 
-            this.buttonRun.Enabled = false;
-            this.buttonRun.Location = new System.Drawing.Point(12, 500);
-            this.buttonRun.Name = "buttonRun";
-            this.buttonRun.Size = new System.Drawing.Size(75, 23);
-            this.buttonRun.TabIndex = 2;
-            this.buttonRun.Text = "Run";
-            this.buttonRun.UseVisualStyleBackColor = true;
-            this.buttonRun.Click += new System.EventHandler(this.buttonRun_Click);
             // 
             // checkBoxSHA1_1
             // 
@@ -209,7 +197,7 @@ namespace SHA1_SHA256_MD5
             dataPoint1.BackSecondaryColor = System.Drawing.Color.White;
             dataPoint1.BorderColor = System.Drawing.Color.White;
             dataPoint1.Color = System.Drawing.Color.Brown;
-            dataPoint1.CustomProperties = "LabelStyle=Top";
+            dataPoint1.CustomProperties = "LabelStyle=Bottom";
             dataPoint1.IsValueShownAsLabel = true;
             dataPoint1.LabelBackColor = System.Drawing.Color.DarkGray;
             dataPoint1.LabelBorderColor = System.Drawing.Color.Maroon;
@@ -239,8 +227,9 @@ namespace SHA1_SHA256_MD5
             series1.Points.Add(dataPoint1);
             series1.Points.Add(dataPoint2);
             series1.Points.Add(dataPoint3);
+            series1.SmartLabelStyle.AllowOutsidePlotArea = System.Windows.Forms.DataVisualization.Charting.LabelOutsidePlotAreaStyle.No;
             this.chart1.Series.Add(series1);
-            this.chart1.Size = new System.Drawing.Size(683, 369);
+            this.chart1.Size = new System.Drawing.Size(806, 369);
             this.chart1.TabIndex = 12;
             this.chart1.Text = "chart1";
             title1.Font = new System.Drawing.Font("Times New Roman", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -312,7 +301,7 @@ namespace SHA1_SHA256_MD5
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1076, 535);
+            this.ClientSize = new System.Drawing.Size(1103, 535);
             this.Controls.Add(this.checkBoxSHA256_4);
             this.Controls.Add(this.checkBoxSHA1_4);
             this.Controls.Add(this.checkBoxMD5_3);
@@ -328,7 +317,6 @@ namespace SHA1_SHA256_MD5
             this.Controls.Add(this.checkBoxSHA1_3);
             this.Controls.Add(this.checkBoxSHA1_2);
             this.Controls.Add(this.checkBoxSHA1_1);
-            this.Controls.Add(this.buttonRun);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.buttonBack);
             this.Name = "Form2";
@@ -344,7 +332,6 @@ namespace SHA1_SHA256_MD5
 
         private System.Windows.Forms.Button buttonBack;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button buttonRun;
         private System.Windows.Forms.CheckBox checkBoxSHA1_1;
         private System.Windows.Forms.CheckBox checkBoxSHA1_2;
         private System.Windows.Forms.CheckBox checkBoxSHA1_3;

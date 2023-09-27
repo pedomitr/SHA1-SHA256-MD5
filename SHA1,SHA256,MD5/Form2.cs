@@ -161,7 +161,6 @@ namespace SHA1_SHA256_MD5
              {
                 textBoxDatoteka.Text = open.SafeFileName;
                 array = File.ReadAllBytes(open.FileName);
-                buttonRun.Enabled = true;
                 buttonPregled.Enabled = true;
              }
          }
