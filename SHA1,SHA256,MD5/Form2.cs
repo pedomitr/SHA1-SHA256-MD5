@@ -12,7 +12,7 @@ namespace SHA1_SHA256_MD5
 {
     public partial class Form2 : Form
     {
-        byte[] array;//sprema podatke odabranog filea
+        private byte[] array;//sprema podatke odabranog filea
         public Form2()
         {
             InitializeComponent();          

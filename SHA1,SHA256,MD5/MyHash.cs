@@ -333,7 +333,7 @@ namespace SHA1_SHA256_MD5
             byte[] be = new byte[i];
             foreach(byte b in le)
             {
-                be[(i--) - 1] = b;
+                be[--i] = b;
                 if (i == 0) break;
             }
             return be;
