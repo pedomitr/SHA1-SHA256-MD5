@@ -81,9 +81,9 @@ namespace SHA1_SHA256_MD5
             // 
             // buttonSHA1
             // 
-            this.buttonSHA1.Location = new System.Drawing.Point(39, 292);
+            this.buttonSHA1.Location = new System.Drawing.Point(39, 291);
             this.buttonSHA1.Name = "buttonSHA1";
-            this.buttonSHA1.Size = new System.Drawing.Size(93, 23);
+            this.buttonSHA1.Size = new System.Drawing.Size(93, 25);
             this.buttonSHA1.TabIndex = 3;
             this.buttonSHA1.Text = "SHA1";
             this.buttonSHA1.UseVisualStyleBackColor = true;
@@ -93,7 +93,7 @@ namespace SHA1_SHA256_MD5
             // 
             this.buttonSHA256.Location = new System.Drawing.Point(39, 322);
             this.buttonSHA256.Name = "buttonSHA256";
-            this.buttonSHA256.Size = new System.Drawing.Size(93, 23);
+            this.buttonSHA256.Size = new System.Drawing.Size(93, 25);
             this.buttonSHA256.TabIndex = 4;
             this.buttonSHA256.Text = "SHA256";
             this.buttonSHA256.UseVisualStyleBackColor = true;
@@ -101,9 +101,9 @@ namespace SHA1_SHA256_MD5
             // 
             // buttonMD5
             // 
-            this.buttonMD5.Location = new System.Drawing.Point(39, 261);
+            this.buttonMD5.Location = new System.Drawing.Point(39, 260);
             this.buttonMD5.Name = "buttonMD5";
-            this.buttonMD5.Size = new System.Drawing.Size(93, 23);
+            this.buttonMD5.Size = new System.Drawing.Size(93, 25);
             this.buttonMD5.TabIndex = 5;
             this.buttonMD5.Text = "MD5";
             this.buttonMD5.UseVisualStyleBackColor = true;
@@ -137,9 +137,9 @@ namespace SHA1_SHA256_MD5
             // 
             this.buttonRunAll.Location = new System.Drawing.Point(57, 480);
             this.buttonRunAll.Name = "buttonRunAll";
-            this.buttonRunAll.Size = new System.Drawing.Size(75, 23);
+            this.buttonRunAll.Size = new System.Drawing.Size(100, 25);
             this.buttonRunAll.TabIndex = 9;
-            this.buttonRunAll.Text = "Run All";
+            this.buttonRunAll.Text = "Pokreni Sve";
             this.buttonRunAll.UseVisualStyleBackColor = true;
             this.buttonRunAll.Click += new System.EventHandler(this.buttonRunAll_Click);
             // 
@@ -147,9 +147,9 @@ namespace SHA1_SHA256_MD5
             // 
             this.buttonSHA1Copy.Location = new System.Drawing.Point(657, 291);
             this.buttonSHA1Copy.Name = "buttonSHA1Copy";
-            this.buttonSHA1Copy.Size = new System.Drawing.Size(143, 25);
+            this.buttonSHA1Copy.Size = new System.Drawing.Size(175, 25);
             this.buttonSHA1Copy.TabIndex = 10;
-            this.buttonSHA1Copy.Text = "Copy to Clipboard";
+            this.buttonSHA1Copy.Text = "Kopiraj u Međuspremnik";
             this.buttonSHA1Copy.UseVisualStyleBackColor = true;
             this.buttonSHA1Copy.Click += new System.EventHandler(this.buttonSHA1Copy_Click);
             // 
@@ -157,9 +157,9 @@ namespace SHA1_SHA256_MD5
             // 
             this.buttonSHA256Copy.Location = new System.Drawing.Point(657, 322);
             this.buttonSHA256Copy.Name = "buttonSHA256Copy";
-            this.buttonSHA256Copy.Size = new System.Drawing.Size(143, 25);
+            this.buttonSHA256Copy.Size = new System.Drawing.Size(175, 25);
             this.buttonSHA256Copy.TabIndex = 11;
-            this.buttonSHA256Copy.Text = "Copy to Clipboard";
+            this.buttonSHA256Copy.Text = "Kopiraj u Međuspremnik";
             this.buttonSHA256Copy.UseVisualStyleBackColor = true;
             this.buttonSHA256Copy.Click += new System.EventHandler(this.buttonSHA256Copy_Click);
             // 
@@ -167,9 +167,9 @@ namespace SHA1_SHA256_MD5
             // 
             this.buttonMD5Copy.Location = new System.Drawing.Point(657, 260);
             this.buttonMD5Copy.Name = "buttonMD5Copy";
-            this.buttonMD5Copy.Size = new System.Drawing.Size(143, 25);
+            this.buttonMD5Copy.Size = new System.Drawing.Size(175, 25);
             this.buttonMD5Copy.TabIndex = 12;
-            this.buttonMD5Copy.Text = "Copy to Clipboard";
+            this.buttonMD5Copy.Text = "Kopiraj u Međuspremnik";
             this.buttonMD5Copy.UseVisualStyleBackColor = true;
             this.buttonMD5Copy.Click += new System.EventHandler(this.buttonMD5Copy_Click);
             // 
@@ -218,17 +218,17 @@ namespace SHA1_SHA256_MD5
             // 
             this.buttonBack.Location = new System.Drawing.Point(725, 480);
             this.buttonBack.Name = "buttonBack";
-            this.buttonBack.Size = new System.Drawing.Size(75, 23);
+            this.buttonBack.Size = new System.Drawing.Size(75, 25);
             this.buttonBack.TabIndex = 18;
-            this.buttonBack.Text = "Back";
+            this.buttonBack.Text = "Natrag";
             this.buttonBack.UseVisualStyleBackColor = true;
             this.buttonBack.Click += new System.EventHandler(this.buttonBack_Click);
             // 
             // buttonMD5me
             // 
-            this.buttonMD5me.Location = new System.Drawing.Point(39, 353);
+            this.buttonMD5me.Location = new System.Drawing.Point(39, 352);
             this.buttonMD5me.Name = "buttonMD5me";
-            this.buttonMD5me.Size = new System.Drawing.Size(93, 23);
+            this.buttonMD5me.Size = new System.Drawing.Size(93, 25);
             this.buttonMD5me.TabIndex = 19;
             this.buttonMD5me.Text = "MyMD5";
             this.buttonMD5me.UseVisualStyleBackColor = true;
@@ -244,9 +244,9 @@ namespace SHA1_SHA256_MD5
             // 
             // buttonSHA1me
             // 
-            this.buttonSHA1me.Location = new System.Drawing.Point(39, 383);
+            this.buttonSHA1me.Location = new System.Drawing.Point(39, 381);
             this.buttonSHA1me.Name = "buttonSHA1me";
-            this.buttonSHA1me.Size = new System.Drawing.Size(93, 23);
+            this.buttonSHA1me.Size = new System.Drawing.Size(93, 25);
             this.buttonSHA1me.TabIndex = 21;
             this.buttonSHA1me.Text = "MySHA1";
             this.buttonSHA1me.UseVisualStyleBackColor = true;
@@ -254,9 +254,9 @@ namespace SHA1_SHA256_MD5
             // 
             // buttonSHA256me
             // 
-            this.buttonSHA256me.Location = new System.Drawing.Point(39, 414);
+            this.buttonSHA256me.Location = new System.Drawing.Point(39, 413);
             this.buttonSHA256me.Name = "buttonSHA256me";
-            this.buttonSHA256me.Size = new System.Drawing.Size(93, 23);
+            this.buttonSHA256me.Size = new System.Drawing.Size(93, 25);
             this.buttonSHA256me.TabIndex = 22;
             this.buttonSHA256me.Text = "MySHA256";
             this.buttonSHA256me.UseVisualStyleBackColor = true;
@@ -266,9 +266,9 @@ namespace SHA1_SHA256_MD5
             // 
             this.buttonMD5meCopy.Location = new System.Drawing.Point(657, 350);
             this.buttonMD5meCopy.Name = "buttonMD5meCopy";
-            this.buttonMD5meCopy.Size = new System.Drawing.Size(143, 25);
+            this.buttonMD5meCopy.Size = new System.Drawing.Size(175, 25);
             this.buttonMD5meCopy.TabIndex = 23;
-            this.buttonMD5meCopy.Text = "Copy to Clipboard";
+            this.buttonMD5meCopy.Text = "Kopiraj u Međuspremnik";
             this.buttonMD5meCopy.UseVisualStyleBackColor = true;
             this.buttonMD5meCopy.Click += new System.EventHandler(this.buttonMD5meCopy_Click);
             // 
@@ -276,9 +276,9 @@ namespace SHA1_SHA256_MD5
             // 
             this.buttonSHA1meCopy.Location = new System.Drawing.Point(657, 382);
             this.buttonSHA1meCopy.Name = "buttonSHA1meCopy";
-            this.buttonSHA1meCopy.Size = new System.Drawing.Size(143, 25);
+            this.buttonSHA1meCopy.Size = new System.Drawing.Size(175, 25);
             this.buttonSHA1meCopy.TabIndex = 24;
-            this.buttonSHA1meCopy.Text = "Copy to Clipboard";
+            this.buttonSHA1meCopy.Text = "Kopiraj u Međuspremnik";
             this.buttonSHA1meCopy.UseVisualStyleBackColor = true;
             this.buttonSHA1meCopy.Click += new System.EventHandler(this.buttonSHA1meCopy_Click);
             // 
@@ -286,9 +286,9 @@ namespace SHA1_SHA256_MD5
             // 
             this.buttonSHA256meCopy.Location = new System.Drawing.Point(657, 413);
             this.buttonSHA256meCopy.Name = "buttonSHA256meCopy";
-            this.buttonSHA256meCopy.Size = new System.Drawing.Size(143, 25);
+            this.buttonSHA256meCopy.Size = new System.Drawing.Size(175, 25);
             this.buttonSHA256meCopy.TabIndex = 25;
-            this.buttonSHA256meCopy.Text = "Copy to Clipboard";
+            this.buttonSHA256meCopy.Text = "Kopiraj u Međuspremnik";
             this.buttonSHA256meCopy.UseVisualStyleBackColor = true;
             this.buttonSHA256meCopy.Click += new System.EventHandler(this.buttonSHA256meCopy_Click);
             // 
